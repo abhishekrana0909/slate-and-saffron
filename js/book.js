@@ -3,7 +3,7 @@
   var html = document.documentElement, book = document.getElementById('book');
   if (!book || !html.classList.contains('intro')) return;
   var word = document.getElementById('bkW'), skip = book.querySelector('.bk-skip');
-  var colours = ['#E0322B', '#EE7F0E', '#E12C8B', '#1F6FE5', '#2F9E5B', '#0C9A9A', '#C9601A', '#8ECB2B', '#E0322B'];
+  var colours = ['#2F5D46', '#B5653A', '#2F5D46', '#8A5A12', '#2F5D46', '#B5653A', '#8A5A12', '#2F5D46', '#2F5D46'];
   var seen = false, timers = [], ended = false;
   try { seen = !!localStorage.getItem('ga:seen'); localStorage.setItem('ga:seen', '1'); sessionStorage.setItem('ga:intro', '1'); } catch (e) {}
   var at = function (ms, fn) { timers.push(setTimeout(fn, ms)); };
