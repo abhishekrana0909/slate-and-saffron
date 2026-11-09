@@ -121,10 +121,10 @@
   // ----- browse and filters -----
   if ($('browse')) {
     var cards = {}, res = $('res'), text = {};
-    GA.recipes.forEach(function (r, i) { cards[r.id] = res.children[i]; text[r.id] = [r.n, r.cn, r.d, r.de, GA.conts[r.c].n].concat(r.f.map(function (k) { return GA.ing[k].join(' '); })).join(' ').toLowerCase(); });
+    GA.recipes.filter(function (r) { return !r.drink; }).forEach(function (r, i) { cards[r.id] = res.children[i]; text[r.id] = [r.n, r.cn, r.d, r.de, GA.conts[r.c].n].concat(r.f.map(function (k) { return GA.ing[k].join(' '); })).join(' ').toLowerCase(); });
     var apply = function () {
       var q = $('q').value.trim().toLowerCase(), c = $('fC').value, m = $('fM').value, qk = $('fQ').checked, ez = $('fE').checked, npg = $('fN').checked, n = 0;
-      GA.recipes.forEach(function (r) {
+      GA.recipes.filter(function (r) { return !r.drink; }).forEach(function (r) {
         var ok = (!q || text[r.id].indexOf(q) >= 0) && (!c || r.c === c) && (!m || r.m.indexOf(m) >= 0) && (!qk || r.t < 20) && (!ez || r.lv === 1) && (!npg || r.npg);
         cards[r.id].style.display = ok ? '' : 'none'; if (ok) { n++; cards[r.id].classList.add('in'); }
       });
