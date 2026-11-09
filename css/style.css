@@ -48,7 +48,7 @@ p { margin: 0 0 1em; }
 .mast-tag i { width: 9px; height: 9px; background: var(--terra); display: inline-block; }
 .fire { position: relative; height: min(84vh, 780px); overflow: hidden; background: #0c0805; }
 .fire img { width: 100%; height: 100%; object-fit: cover; }
-.fire::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(10,7,4,.78)); }
+.fire::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,9,.1) 25%, rgba(10,12,9,.88)); }
 .fire-t { position: absolute; left: 0; right: 0; bottom: clamp(26px, 5vw, 56px); z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; color: var(--cream); }
 .fire-t h2 { margin: 0; text-transform: uppercase; font-size: clamp(1.9rem, 4.2vw, 3.6rem); line-height: 1.08; }
 .menu { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(32px, 6vw, 88px); align-items: start; }
