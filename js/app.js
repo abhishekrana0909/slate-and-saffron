@@ -1,4 +1,4 @@
-// Fridge finder, filters, saved recipes and cooking mode.
+// Fridge finder, recipe filters, ratings, saved recipes and cooking mode.
 (function () {
   var ROOT = document.documentElement.dataset.root || '', GA = window.GA;
   var $ = function (s) { return document.getElementById(s); };
@@ -8,10 +8,67 @@
   };
   var byId = {}, LV = ['', 'Easy', 'Medium', 'Hard'];
   GA.recipes.forEach(function (r) { byId[r.id] = r; });
-  var foods = GA.recipes.filter(function (r) { return !r.drink; });
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   function plate(r, extra) {
     return '<a class="plate" href="' + ROOT + 'r/' + r.id + '/"><span class="p-i"><img src="' + ROOT + 'images/' + r.id + '/card.webp" alt="' + esc(r.n) + '" width="640" height="480" loading="lazy"></span><strong>' + esc(r.n) + '</strong><small>' + esc(r.cn) + ' · ' + r.t + ' min · ' + LV[r.lv] + (r.sh ? ' · Vegetarian version' : '') + '</small>' + (extra || '') + '</a>';
+  }
+
+  // ----- ratings (kept on this device) -----
+  var rates = store.get('ga:rate', {});
+  function starText(n) { var s = ''; for (var i = 1; i <= 5; i++) s += i <= n ? '★' : '☆'; return s; }
+  function paintStars() {
+    document.querySelectorAll('.stars').forEach(function (el) {
+      var n = rates[el.dataset.id] || 0;
+      el.textContent = starText(n); el.title = n ? 'Your rating: ' + n + ' of 5' : 'Not rated yet. Open the recipe to rate it.';
+      el.classList.toggle('has', !!n);
+    });
+  }
+  paintStars();
+  var rateBox = $('rate');
+  if (rateBox) {
+    var rid = rateBox.dataset.id, btns = rateBox.querySelectorAll('button');
+    var paintRate = function () { var n = rates[rid] || 0; btns.forEach(function (b) { b.textContent = +b.dataset.n <= n ? '★' : '☆'; b.classList.toggle('on', +b.dataset.n <= n); }); };
+    btns.forEach(function (b) { b.addEventListener('click', function () { var n = +b.dataset.n; rates[rid] = rates[rid] === n ? 0 : n; store.set('ga:rate', rates); paintRate(); }); });
+    paintRate();
+  }
+
+  // ----- reveal on scroll -----
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('.rc, .xc, .regtiles a').forEach(function (el) { el.classList.add('rv'); io.observe(el); });
+  }
+
+  // ----- filters on listing pages -----
+  var bar = document.querySelector('.fbar');
+  if (bar) {
+    var grid = $(bar.dataset.grid), cards = [].slice.call(grid.querySelectorAll('.rc'));
+    var st = { q: '', f: {}, reg: '', c: '', m: '' };
+    var chips = bar.querySelectorAll('.chip[data-f]'), regs = bar.querySelectorAll('.chip[data-reg]');
+    var apply = function () {
+      var n = 0, q = st.q.trim().toLowerCase();
+      cards.forEach(function (el) {
+        var d = el.dataset;
+        var ok = (!q || d.n.indexOf(q) >= 0) && (!st.f.vg || d.vg === '1') && (!st.f.gf || d.gf === '1') && (!st.f.quick || +d.t < 30) &&
+          (!st.reg || d.reg.split('|').indexOf(st.reg) >= 0) && (!st.c || d.c === st.c) && (!st.m || d.m.indexOf(st.m) >= 0);
+        el.style.display = ok ? '' : 'none'; if (ok) n++;
+      });
+      $('cnt').textContent = n; var none = $('none'); if (none) none.hidden = n > 0;
+      chips.forEach(function (b) { var k = b.dataset.f; b.classList.toggle('on', k === 'all' ? !st.f.vg && !st.f.gf && !st.f.quick : !!st.f[k]); });
+      regs.forEach(function (b) { b.classList.toggle('on', b.dataset.reg === st.reg); });
+    };
+    chips.forEach(function (b) { b.addEventListener('click', function () { var k = b.dataset.f; if (k === 'all') { st.f = {}; st.reg = ''; } else st.f[k] = !st.f[k]; apply(); }); });
+    regs.forEach(function (b) { b.addEventListener('click', function () { st.reg = st.reg === b.dataset.reg ? '' : b.dataset.reg; apply(); }); });
+    $('q').addEventListener('input', function (e) { st.q = e.target.value; apply(); });
+    if ($('fC')) $('fC').addEventListener('change', function (e) { st.c = e.target.value; apply(); });
+    if ($('fM')) $('fM').addEventListener('change', function (e) { st.m = e.target.value; apply(); });
+    var pre = new URLSearchParams(location.search);
+    if (pre.get('q')) { st.q = pre.get('q'); $('q').value = st.q; }
+    if (pre.get('r')) st.reg = pre.get('r');
+    if (pre.get('c') && $('fC')) { st.c = pre.get('c'); $('fC').value = st.c; }
+    if (pre.get('m') && $('fM')) { st.m = pre.get('m'); $('fM').value = st.m; }
+    if (pre.get('quick')) st.f.quick = true;
+    apply();
   }
 
   // ----- fridge -----
@@ -39,27 +96,6 @@
     });
     $('fClear').addEventListener('click', function () { have.clear(); store.set('ga:fridge', []); sync(); render(); });
     sync(); render();
-  }
-
-  // ----- browse and filters -----
-  if ($('browse')) {
-    var cards = {}, res = $('res'), text = {};
-    foods.forEach(function (r, i) { cards[r.id] = res.children[i]; text[r.id] = [r.n, r.cn, r.d, r.de, GA.conts[r.c]].concat(r.f.map(function (k) { return GA.ing[k].join(' '); })).join(' ').toLowerCase(); });
-    var apply = function () {
-      var q = $('q').value.trim().toLowerCase(), c = $('fC').value, m = $('fM').value, qk = $('fQ').checked, ez = $('fE').checked, npg = $('fN').checked, n = 0;
-      foods.forEach(function (r) {
-        var ok = (!q || text[r.id].indexOf(q) >= 0) && (!c || r.c === c) && (!m || r.m.indexOf(m) >= 0) && (!qk || r.t < 20) && (!ez || r.lv === 1) && (!npg || r.npg);
-        cards[r.id].style.display = ok ? '' : 'none'; if (ok) n++;
-      });
-      $('cnt').textContent = n; $('none').hidden = n > 0;
-    };
-    ['q', 'fC', 'fM', 'fQ', 'fE', 'fN'].forEach(function (id) { $(id).addEventListener(id === 'q' ? 'input' : 'change', apply); });
-    var pre = new URLSearchParams(location.search);
-    if (pre.get('q')) $('q').value = pre.get('q');
-    if (pre.get('c')) $('fC').value = pre.get('c');
-    if (pre.get('m')) $('fM').value = pre.get('m');
-    if (pre.get('quick')) $('fQ').checked = true;
-    if (location.search) apply();
   }
 
   // ----- saved -----
@@ -94,9 +130,9 @@
     var stop = function () { clearInterval(iv); iv = 0; $('cmStart').textContent = 'Start timer'; };
     var show = function () {
       stop();
-      var st = R.steps[i], mins = st[1];
+      var s = R.steps[i], mins = s[1];
       $('cmI').textContent = 'Step ' + (i + 1) + ' of ' + R.steps.length;
-      $('cmT').textContent = st[0];
+      $('cmT').textContent = s[0];
       $('cmTimer').hidden = !mins;
       left2 = mins * 60; clock(); $('cmClock').classList.remove('up');
       $('cmP').style.visibility = i ? 'visible' : 'hidden';
