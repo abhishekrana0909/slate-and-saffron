@@ -1582,3 +1582,8 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .hero-t h1 { text-shadow: 0 2px 34px rgba(0, 0, 0, .7), 0 1px 3px rgba(0, 0, 0, .5); }
 .hero-s, .hero-t .kick { text-shadow: 0 1px 14px rgba(0, 0, 0, .75); }
 .hero::after { background: linear-gradient(90deg, rgba(8, 7, 6, .86) 0%, rgba(8, 7, 6, .62) 42%, rgba(8, 7, 6, .12) 80%, rgba(8, 7, 6, 0) 100%), linear-gradient(0deg, var(--bg) 0%, rgba(11, 11, 12, .72) 20%, rgba(11, 11, 12, .2) 44%, transparent 60%), linear-gradient(180deg, rgba(8, 7, 6, .4) 0%, transparent 22%); }
+
+.ch-l { position: relative; }
+.ch-l .ch-go { position: absolute; right: 20px; bottom: 18px; margin: 0; font-size: 1.3rem; line-height: 1; letter-spacing: 0; transition: transform .3s; }
+.ch-l:hover .ch-go { transform: translateX(6px); }
+.ch-l .spice { display: inline-flex; }
