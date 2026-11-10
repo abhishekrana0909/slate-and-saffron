@@ -1326,3 +1326,22 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 
 .mb-dark .mb-menu.short { height: calc(100% - 106px); }
 @media (max-width: 760px) { .mb-dark .mb-pg.mb-l { display: none; } }
+
+/* ===== MENU COVER: one big dark photo behind everything ===== */
+.mb-dark .mc-front { background: #0d0d0f; }
+.mb-dark .mc-photo { inset: 0; height: 100%; z-index: 0; -webkit-mask-image: none; mask-image: none; }
+.mb-dark .mc-photo img { object-position: 50% 58%; filter: brightness(.66) saturate(1.05) contrast(1.1); }
+.mb-dark .mc-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 8, 9, .9) 0%, rgba(8, 8, 9, .7) 30%, rgba(8, 8, 9, .4) 56%, rgba(8, 8, 9, .86) 100%); }
+.mb-dark .mc-front::before { z-index: 1; opacity: .5; -webkit-mask-image: linear-gradient(180deg, #000, transparent 70%); mask-image: linear-gradient(180deg, #000, transparent 70%); }
+
+/* ===== MOOD PICKER PHOTOS: darker, with drifting black smoke ===== */
+.mp-i { background: #0a0a0b; }
+.mp-i img { filter: brightness(.6) contrast(1.16) saturate(.78); transition: transform 1s cubic-bezier(.2, .7, .2, 1), filter .8s; }
+.mp-i::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: radial-gradient(ellipse at 50% 45%, transparent 32%, rgba(5, 5, 6, .8) 100%), linear-gradient(0deg, rgba(5, 5, 6, .6), transparent 45%); transition: opacity .8s; }
+.mp-i::after { content: ''; position: absolute; inset: -22%; z-index: 2; pointer-events: none; background: radial-gradient(circle at 18% 82%, rgba(0, 0, 0, .75), transparent 52%), radial-gradient(circle at 82% 68%, rgba(8, 8, 10, .68), transparent 48%), radial-gradient(circle at 50% 22%, rgba(0, 0, 0, .5), transparent 58%); filter: blur(12px); animation: smokeDrift 11s ease-in-out infinite alternate; transition: opacity .8s; }
+@keyframes smokeDrift { 0% { transform: translate3d(-5%, 3%, 0) scale(1); } 100% { transform: translate3d(6%, -4%, 0) scale(1.16); } }
+.mp-i b { z-index: 3; }
+.mp-c:hover .mp-i img { filter: brightness(.84) contrast(1.1) saturate(.95); }
+.mp-c:hover .mp-i::after { opacity: .45; }
+.mp-c:hover .mp-i::before { opacity: .6; }
+@media (prefers-reduced-motion: reduce) { .mp-i::after { animation: none; } }
