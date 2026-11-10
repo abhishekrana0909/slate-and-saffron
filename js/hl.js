@@ -139,3 +139,19 @@
   });
   pick(0);
 })();
+
+(function () {
+  var pj = document.getElementById('punjabi');
+  if (pj) {
+    var o = pj.querySelector('.pj-open'), p = pj.querySelector('.pj-panel'), x = pj.querySelector('.pj-x');
+    if (o && p) {
+      o.addEventListener('click', function () { p.hidden = false; o.setAttribute('aria-expanded', 'true'); o.hidden = true; p.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+      x.addEventListener('click', function () { p.hidden = true; o.hidden = false; o.setAttribute('aria-expanded', 'false'); pj.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    }
+  }
+  var ch = document.getElementById('chutney');
+  if (ch) {
+    var bs = [].slice.call(ch.querySelectorAll('.ch-f button')), cs = [].slice.call(ch.querySelectorAll('.ch-c'));
+    bs.forEach(function (b) { b.addEventListener('click', function () { bs.forEach(function (z) { z.classList.toggle('on', z === b); }); cs.forEach(function (c) { c.hidden = !!b.dataset.r && c.dataset.r !== b.dataset.r; }); }); });
+  }
+})();
