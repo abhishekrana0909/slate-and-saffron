@@ -68,7 +68,7 @@
   }
 
   // ----- 3. blocks glide in -----
-  var FX = ['.kick', '.lead', '.hero-b', '.hero-by', '.tlink', '.rule', '.feat-c', '.mb', '.mb-ctl', '.row', '.pc', '.regc', '.rc', '.xc', '.plate', '.story > div > p', '.news-w > div, .news-f', '.mock2-t > p, .mock2-t .btn, .acc-row, .th-stage, .mock2-g', '.fridge-t > div > *, .fridge-t form', '.ticks .tick', '.foot-w > *', '.hl-list li', '.jump a', '.tagnote', '.pg-h .lead', '.cz-w > *', '.rcs-h', '.doc > *', '.r-g > *', '.fbar'];
+  var FX = ['.kick', '.lead', '.hero-b', '.hero-by', '.tlink', '.rule', '.feat-c', '.mb', '.mb-ctl', '.row', '.pc', '.regc', '.rc', '.xc', '.plate', '.story > div > p', '.news-w > div, .news-f', '.mock2-t > p, .mock2-t .btn, .acc-row, .th-stage, .mock2-g, .mp-chips, .tl-line, .tl-s', '.fridge-t > div > *, .fridge-t form', '.ticks .tick', '.foot-w > *', '.hl-list li', '.jump a', '.tagnote', '.pg-h .lead', '.cz-w > *', '.rcs-h', '.doc > *', '.r-g > *', '.fbar'];
   var LITE = '.rc, .xc, .plate, .row, .jump a, .tick';
   var groups = new Map();
   $$(FX.join(','), main).forEach(function (el) {

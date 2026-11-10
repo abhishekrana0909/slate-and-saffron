@@ -105,3 +105,24 @@
     }
   });
 })();
+
+// ---- Pick by mood: choose a chip, the matching recipes appear ----
+(function () {
+  var wrap = document.querySelector('.mp');
+  if (!wrap) return;
+  var chips = [].slice.call(wrap.querySelectorAll('.mp-chip'));
+  var panels = [].slice.call(wrap.querySelectorAll('.mp-panel'));
+  function pick(i) {
+    chips.forEach(function (c, k) { c.classList.toggle('on', k === i); c.setAttribute('aria-selected', k === i ? 'true' : 'false'); c.tabIndex = k === i ? 0 : -1; });
+    panels.forEach(function (p, k) { p.classList.toggle('on', k === i); p.hidden = k !== i; });
+  }
+  chips.forEach(function (c, i) {
+    c.addEventListener('click', function () { pick(i); });
+    c.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var n = (i + (e.key === 'ArrowRight' ? 1 : -1) + chips.length) % chips.length;
+      pick(n); chips[n].focus(); e.preventDefault(); e.stopPropagation();
+    });
+  });
+  pick(0);
+})();
