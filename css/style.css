@@ -1360,3 +1360,10 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .mb-dark .mc-s2 { gap: 14px; margin: 0; padding-left: .42em; font: 500 clamp(.68rem, 1vw, .84rem) Cinzel, serif; letter-spacing: .42em; color: #E8C06A; text-shadow: 0 1px 8px rgba(0, 0, 0, .9); white-space: nowrap; }
 .mb-dark .mc-s2 i { width: clamp(22px, 4.4vw, 46px); }
 @media (max-width: 760px) { .mb-dark .mc-front em { top: calc(11% + clamp(3.4rem, 17vw, 4.9rem)); } .mb-dark .mc-s2 { letter-spacing: .3em; padding-left: .3em; font-size: .66rem; } }
+
+/* ===== MOOD PICKER PHOTOS v2: rich and warm, not dull ===== */
+.mp-i img { filter: brightness(.86) contrast(1.14) saturate(1.12); }
+.mp-i::before { background: radial-gradient(ellipse at 50% 45%, transparent 48%, rgba(5, 5, 6, .6) 100%), linear-gradient(0deg, rgba(5, 5, 6, .42), transparent 40%); }
+.mp-i::after { opacity: .5; }
+.mp-c:hover .mp-i img { filter: brightness(1) contrast(1.1) saturate(1.2); }
+.mp-c:hover .mp-i::after { opacity: .22; }
