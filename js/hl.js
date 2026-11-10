@@ -159,37 +159,30 @@
   }
 })();
 
-// ---- Moods: the list changes by itself as you scroll (picture wipes up); pointing at a mood does the glow-and-fade instead ----
+// ---- Moods: point at a mood and its picture fades in with a glow. On touch screens it changes by itself while on screen. ----
 (function () {
-  var track = document.querySelector('.hl-track'); if (!track) return;
-  var sec = track.querySelector('.hl-m'), imgs = [].slice.call(sec.querySelectorAll('.hl-bg img')), items = [].slice.call(sec.querySelectorAll('.hl-list li'));
-  var list = sec.querySelector('.hl-list'), n = items.length, cur = -1, hover = false, pt = 0;
-  var bar = document.createElement('span'); bar.className = 'hl-bar'; bar.setAttribute('aria-hidden', 'true'); bar.innerHTML = '<i></i>'; sec.appendChild(bar);
-  function show(i, via) {
-    if (i === cur) return;
-    sec.setAttribute('data-via', via);
-    if (via === 'scroll') { imgs.forEach(function (im, k) { im.classList.toggle('prev', k === cur); }); clearTimeout(pt); pt = setTimeout(function () { imgs.forEach(function (im) { im.classList.remove('prev'); }); }, 1100); }
+  var sec = document.querySelector('.hl-m'); if (!sec) return;
+  var imgs = [].slice.call(sec.querySelectorAll('.hl-bg img')), items = [].slice.call(sec.querySelectorAll('.hl-list li')), list = sec.querySelector('.hl-list');
+  var cur = 0, timer = 0, coarse = matchMedia('(pointer: coarse)').matches, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show(i, light) {
     cur = i;
     imgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
-    items.forEach(function (li, k) { li.classList.toggle('act', k === i); });
-    sec.classList.add('has-act');
+    items.forEach(function (li, k) { li.classList.toggle('act', light && k === i); });
+    sec.classList.toggle('has-act', !!light);
     sec.style.setProperty('--g', items[i].dataset.g || '#D98A18');
-  }
-  function onScroll() {
-    var r = track.getBoundingClientRect(), span = track.offsetHeight - window.innerHeight;
-    var p = Math.max(0, Math.min(1, -r.top / span));
-    bar.firstChild.style.height = (p * 100) + '%';
-    if (hover) return;
-    show(Math.min(n - 1, Math.floor(p * n * .999)), 'scroll');
   }
   items.forEach(function (li, k) {
     var a = li.querySelector('a');
-    a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' || !e.pointerType) { hover = true; show(k, 'hover'); } });
-    a.addEventListener('focus', function () { hover = true; show(k, 'hover'); });
+    a.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse' || !e.pointerType) show(k, true); });
+    a.addEventListener('focus', function () { show(k, true); });
   });
-  list.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' || !e.pointerType) { hover = false; onScroll(); } });
-  list.addEventListener('focusout', function (e) { if (!list.contains(e.relatedTarget)) { hover = false; onScroll(); } });
-  var tk = 0; window.addEventListener('scroll', function () { if (!tk) tk = requestAnimationFrame(function () { tk = 0; onScroll(); }); }, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll(); if (cur < 0) show(0, 'scroll');
+  list.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' || !e.pointerType) show(cur, false); });
+  list.addEventListener('focusout', function (e) { if (!list.contains(e.relatedTarget)) show(cur, false); });
+  show(0, false);
+  if (coarse && !reduce && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { if (!timer) timer = setInterval(function () { show((cur + 1) % items.length, true); }, 3600); }
+      else { clearInterval(timer); timer = 0; }
+    }, { threshold: .35 }).observe(sec);
+  }
 })();
