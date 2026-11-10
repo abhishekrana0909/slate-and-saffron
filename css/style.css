@@ -1453,3 +1453,14 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .ch-panel { margin-top: 40px; padding: clamp(22px, 3vw, 40px); background: rgba(10, 13, 10, .92); border: 1px solid rgba(155, 210, 122, .3); animation: rpIn .6s cubic-bezier(.2, .8, .2, 1); }
 .ch-panel .pj-ph h3 { color: #9BD27A; }
 .ch-bg { opacity: .55; }
+
+/* ===== separate pages: Punjabi, Chutney, regions ===== */
+.sub { padding-top: clamp(90px, 10vw, 130px); }
+.sub .pj-front, .sub.ch .ch-front { min-height: 46vh; }
+.sub .pj-t, .sub .ch-t { margin-top: 0; }
+.pj-p .pj-h h2 { margin: 0; font: 400 clamp(2rem, 4vw, 3rem)/1 var(--script); color: var(--ink); }
+.sub .tlink { display: inline-block; margin: 40px 24px 0 0; }
+.ch-c h2 { margin: 6px 0 10px; font: 500 1.35rem/1.15 var(--head); color: var(--ink); }
+.sub.ch { padding-bottom: 80px; }
+.sub .pj-bg, .sub .ch-bg { height: 80vh; bottom: auto; -webkit-mask: linear-gradient(#000 45%, transparent); mask: linear-gradient(#000 45%, transparent); }
+.sub .pj-bd, .sub .ch-bd { bottom: auto; height: 80vh; }
