@@ -36,7 +36,7 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -6% 0px' });
-    document.querySelectorAll('.rc, .xc, .regc, .mood, .seaz, .feat-c').forEach(function (el) { el.classList.add('rv'); io.observe(el); });
+    document.querySelectorAll('.rc, .xc, .regc, .pc, .feat-c').forEach(function (el) { el.classList.add('rv'); io.observe(el); });
   }
 
   // ----- menu button on small screens -----
