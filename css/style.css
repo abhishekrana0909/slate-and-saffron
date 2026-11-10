@@ -1392,3 +1392,21 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .th-ring li.sel .th-dot { background: var(--g); }
 @media (max-width: 1000px) { .rp-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px) { .rp-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } .th-x { margin-left: 0; } }
+
+/* ===== PUNJABI SECTION ===== */
+.pj { position: relative; padding: clamp(60px, 9vw, 120px) 0; background: #0d0a08; overflow: hidden; border-top: 1px solid var(--line); }
+.pj-bd { position: absolute; inset: 0; opacity: .2; pointer-events: none;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 14px, #D98A18 14px 16px, transparent 16px 30px),
+    repeating-linear-gradient(-45deg, transparent 0 14px, #B3262E 14px 16px, transparent 16px 30px);
+  -webkit-mask: linear-gradient(180deg, #000 0, transparent 22%, transparent 78%, #000 100%); mask: linear-gradient(180deg, #000 0, transparent 22%, transparent 78%, #000 100%); }
+.pj .wrap { position: relative; }
+.pj-t { margin: 0 0 10px; font: 400 clamp(3.6rem, 9vw, 7rem)/1 var(--script); color: #F0B36A; text-shadow: 0 0 40px rgba(217, 138, 24, .35); }
+.pj-p { margin-top: clamp(36px, 5vw, 60px); }
+.pj-h { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(217, 138, 24, .4); }
+.pj-h span { color: #B3262E; font: 600 .9rem var(--body); letter-spacing: .2em; }
+.pj-h h3 { margin: 0; font: 400 clamp(2rem, 4vw, 3rem)/1 var(--script); color: var(--ink); }
+.pj-h em { margin-left: auto; color: #F0B36A; font: italic 400 1rem var(--head); }
+.pj .rp-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 760px; }
+.pj-end { margin: 60px 0 0; text-align: center; font: 400 clamp(2.4rem, 6vw, 4.4rem)/1 var(--script); color: #F0B36A; }
+@media (max-width: 700px) { .pj-h em { margin-left: 0; } }
