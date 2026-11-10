@@ -642,3 +642,69 @@ h3 { font-family: var(--head); font-weight: 500; }
   .row-t strong { font-size: 1.55rem; }
   .menu-i { grid-template-columns: 1fr 1fr; }
 }
+
+/* ===== THE MENU AS AN OPEN BOOK ===== */
+.mb-sec { position: relative; height: calc(100vh + (var(--sp, 4) - 1) * 62vh); }
+.mb-pin { position: sticky; top: 62px; height: calc(100vh - 62px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+.mb-pin > .wrap { width: min(1080px, 92vw); }
+.mb-kick { margin: 0; }
+.mb { position: relative; width: min(1080px, 92vw); height: min(600px, calc(100vh - 230px)); min-height: 380px; }
+.mb-spread { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; perspective: 2600px; filter: drop-shadow(0 40px 50px rgba(0, 0, 0, .65)); }
+.mb-pg { position: relative; overflow: hidden; padding: clamp(18px, 3vw, 44px); background: linear-gradient(90deg, #EAE1CD, #F1E9D8 10%, #EEE6D4); color: #1B1912; font-size: 15px; line-height: 1.5; }
+.mb-pg::after { content: ''; position: absolute; inset: 0; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
+.mb-l { border-radius: 4px 0 0 4px; box-shadow: inset -44px 0 44px -36px rgba(0, 0, 0, .4); }
+.mb-r { border-radius: 0 4px 4px 0; box-shadow: inset 44px 0 44px -36px rgba(0, 0, 0, .4), 2px 0 0 #D6CBB3, 4px 0 0 #E4D9C1, 6px 0 0 #CFC3A8; }
+.mb-pg h2 { font-size: clamp(3.4rem, 6vw, 5.4rem); color: #1B1912; margin: .1em 0 .35em; }
+.mb-k { font-size: .74rem; letter-spacing: .22em; text-transform: uppercase; color: #7A6B4E; margin: 0; }
+.mb-toc { list-style: none; margin: 0; padding: 0; }
+.mb-toc a { display: flex; align-items: baseline; gap: 10px; padding: clamp(7px, 1.2vh, 12px) 0; color: #1B1912; transition: color .2s; }
+.mb-toc a:hover span { color: #B8521A; }
+.mb-toc span { font: 500 clamp(1.05rem, 1.7vw, 1.35rem) var(--head); }
+.mb-toc i { flex: 1; border-bottom: 1px dotted rgba(27, 25, 18, .45); transform: translateY(-4px); }
+.mb-toc b { font: 400 .8rem var(--body); color: #7A6B4E; }
+.mb-foot { position: absolute; left: clamp(18px, 3vw, 44px); bottom: clamp(16px, 2.4vw, 30px); margin: 0; font-size: .8rem; color: #7A6B4E; max-width: 30ch; }
+.mb-fig { position: relative; margin: 0; height: calc(100% - clamp(96px, 16vh, 130px)); padding: 7px; background: #FBF7EE; box-shadow: 0 14px 30px -16px rgba(0, 0, 0, .5); }
+.mb-fig::before, .mb-fig::after { content: ''; position: absolute; width: 0; height: 0; z-index: 2; border-style: solid; }
+.mb-fig::before { left: 0; top: 0; border-width: 22px 22px 0 0; border-color: #1B1912 transparent transparent transparent; }
+.mb-fig::after { right: 0; bottom: 0; border-width: 0 0 22px 22px; border-color: transparent transparent #1B1912 transparent; }
+.mb-fig img { width: 100%; height: 100%; object-fit: cover; filter: saturate(1.05) contrast(1.04); }
+.mb-cap { position: absolute; left: clamp(18px, 3vw, 44px); right: clamp(18px, 3vw, 44px); bottom: clamp(16px, 2.4vw, 30px); display: flex; justify-content: space-between; align-items: flex-end; gap: 14px; }
+.mb-cap h3 { font: 500 clamp(1.5rem, 2.8vw, 2.3rem)/1.05 var(--head); color: #1B1912; margin: 0 0 4px; }
+.mb-cap p { margin: 0; font-size: .92rem; color: #4A4332; max-width: 34ch; line-height: 1.35; }
+.mb-cap small { display: block; margin-top: 4px; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; color: #7A6B4E; }
+.mb-go { flex: none; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: #8A3F0E; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+.mb-n { position: absolute; top: clamp(18px, 3vw, 44px); right: clamp(18px, 3vw, 44px); z-index: 3; font: 400 .78rem var(--body); letter-spacing: .12em; color: #fff; mix-blend-mode: difference; }
+.mb-l .mb-n { right: auto; left: clamp(18px, 3vw, 44px); }
+.mb-pg.end { background: #BF4F10; color: #FBEFE0; }
+.mb-pg.end::after { opacity: .5; }
+.mb-pg.end .mb-n { color: #FBEFE0; mix-blend-mode: normal; }
+.mb-end { font: 500 clamp(2.4rem, 4.6vw, 4rem)/1.04 var(--head); margin: clamp(60px, 14vh, 130px) 0 14px; color: #FFF6EA; max-width: 9ch; }
+.mb-pg.end p { color: #FBEFE0; max-width: 28ch; }
+.mb-btn { position: absolute; left: clamp(18px, 3vw, 44px); bottom: clamp(18px, 3vw, 38px); display: inline-block; padding: 14px 26px; background: #FBF4E8; color: #1B1912; font: 500 .8rem var(--body); letter-spacing: .1em; text-transform: uppercase; border-radius: 999px; transition: transform .25s, background .25s; }
+.mb-btn:hover { transform: translateY(-2px); background: #fff; }
+.mb-leaf { position: absolute; top: 0; bottom: 0; width: 50%; z-index: 6; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.5, .05, .25, 1); pointer-events: none; }
+.mb-leaf.nx { right: 0; transform-origin: left center; }
+.mb-leaf.pv { left: 0; transform-origin: right center; }
+.mb-leaf.go.nx { transform: rotateY(-180deg); }
+.mb-leaf.go.pv { transform: rotateY(180deg); }
+.mb-leaf .lf-f, .mb-leaf .lf-b { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.mb-leaf .lf-b { transform: rotateY(180deg); }
+.mb-leaf.go .lf-f::before, .mb-leaf.go .lf-b::before { content: ''; position: absolute; inset: 0; z-index: 4; background: linear-gradient(90deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 65%); animation: shade .9s ease-in-out; }
+.mb-ctl { display: flex; align-items: center; gap: 18px; color: var(--mute); font-size: .86rem; letter-spacing: .16em; }
+.mb-ctl button { width: 46px; height: 46px; border: 1px solid var(--line); background: rgba(5, 5, 6, .6); color: var(--ink); font-size: 1.6rem; line-height: 1; cursor: pointer; transition: .2s; }
+.mb-ctl button:hover { border-color: var(--gold); color: var(--gold); }
+.mb-r.sl-n { animation: slN .38s ease; }
+.mb-r.sl-p { animation: slP .38s ease; }
+
+@media (max-width: 760px) {
+  .mb-sec { height: auto; padding: 56px 0 64px; }
+  .mb-pin { position: static; height: auto; gap: 22px; }
+  .mb { height: auto; min-height: 0; }
+  .mb-spread { position: relative; display: block; perspective: none; }
+  .mb-l { display: none; }
+  .mb-r { min-height: 520px; border-radius: 4px; box-shadow: none; }
+  .mb-fig { height: 300px; }
+  .mb-r .mb-cap { position: static; margin-top: 18px; flex-direction: column; align-items: flex-start; }
+  .mb-r.end { min-height: 420px; }
+  .mb-leaf { display: none; }
+}
