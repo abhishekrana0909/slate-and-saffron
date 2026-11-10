@@ -1587,3 +1587,9 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .ch-l .ch-go { position: absolute; right: 20px; bottom: 18px; margin: 0; font-size: 1.3rem; line-height: 1; letter-spacing: 0; transition: transform .3s; }
 .ch-l:hover .ch-go { transform: translateX(6px); }
 .ch-l .spice { display: inline-flex; }
+/* smaller Punjabi + Chutney home sections */
+.pj:not(.sub), .ch:not(.sub) { padding: clamp(36px, 5vw, 64px) 0; }
+.pj:not(.sub) .pj-front, .ch:not(.sub) .ch-front { min-height: 38vh; }
+.pj:not(.sub) .pj-t { font-size: clamp(2.8rem, 6.5vw, 5rem); }
+.ch:not(.sub) .ch-t { font-size: clamp(2.8rem, 6.2vw, 4.6rem); }
+.pj:not(.sub) .lead, .ch:not(.sub) .lead { font-size: 1rem; max-width: 52ch; }
