@@ -81,6 +81,7 @@
           (!st.mo || (d.mo || '').split(' ').indexOf(st.mo) >= 0) && (!st.se || (d.se || '').split(' ').indexOf(st.se) >= 0);
         el.style.display = ok ? '' : 'none'; if (ok) n++;
       });
+      [].forEach.call(grid.querySelectorAll('.rcs'), function (sc) { var any = [].some.call(sc.querySelectorAll('.rc'), function (c) { return c.style.display !== 'none'; }); sc.style.display = any ? '' : 'none'; });
       $('cnt').textContent = n; var none = $('none'); if (none) none.hidden = n > 0;
       chips.forEach(function (b) { var k = b.dataset.f; b.classList.toggle('on', k === 'all' ? !st.f.vg && !st.f.gf && !st.f.quick : !!st.f[k]); });
       regs.forEach(function (b) { b.classList.toggle('on', b.dataset.reg === st.reg); });
