@@ -1498,3 +1498,11 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .th-bgs img.on { opacity: .5; }
 .th-bgs::after { background: linear-gradient(180deg, #0b0b0c 0, rgba(11, 11, 12, .6) 18%, rgba(11, 11, 12, .68) 80%, #0b0b0c 100%); }
 .th-ring .lb strong, .th-ring .lb small { text-shadow: 0 2px 12px #000; }
+
+/* logo */
+.top .mark { align-items: center; gap: 10px; }
+.mk-i { width: 42px; height: 42px; border-radius: 50%; flex: none; display: block; }
+.foot-logo { display: block; width: min(300px, 80vw); height: auto; margin: 0 0 4px -10px; }
+.foot .mark { margin-bottom: 8px; }
+@media (max-width: 620px) { .top .mark { flex-direction: row; align-items: center; gap: 8px; } .mk-i { width: 36px; height: 36px; } .top .mark .mk-by { display: none; } }
+.foot-logo { -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, #000 70%, transparent 100%); mask-image: radial-gradient(ellipse 62% 60% at 50% 50%, #000 70%, transparent 100%); }
