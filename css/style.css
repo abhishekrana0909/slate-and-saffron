@@ -1549,3 +1549,36 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .cur-fl .cf { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
 .cur-fl.hov .cf { filter: drop-shadow(0 2px 8px rgba(217, 138, 24, .7)); }
 .up { left: auto; right: clamp(14px, 2.4vw, 28px); }
+
+/* chutney: name cards + recipe pages */
+.ch-l { display: block; text-decoration: none; transition: transform .35s cubic-bezier(.2, .8, .2, 1), border-color .3s, background .3s; }
+.ch-l:hover { transform: translateY(-4px); border-color: var(--gold); }
+.ch-go { display: inline-block; margin-top: 14px; font: 500 .74rem var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--gold); }
+.ch-go i { font-style: normal; display: inline-block; transition: transform .3s; }
+.ch-l:hover .ch-go i { transform: translateX(5px); }
+.ch-meta { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 22px 0 0; align-items: center; font: 400 .82rem var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+.ch-meta > span:not(.spice) { padding: 6px 14px; border: 1px solid var(--line); border-radius: 99px; background: rgba(10, 10, 11, .5); }
+.ch-rc { display: grid; grid-template-columns: minmax(260px, 1fr) 1.7fr; gap: clamp(24px, 5vw, 64px); margin-top: 10px; padding-bottom: 20px; }
+.ch-rc h2, .ch-h2 { font: 400 clamp(1.8rem, 3.4vw, 2.6rem)/1.1 var(--script); color: var(--ink); margin: 0 0 18px; }
+.ch-rc h3 { font: 500 .8rem var(--body); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin: 34px 0 12px; }
+.ch-in ul, .ch-tp { list-style: none; margin: 0; padding: 0; }
+.ch-in li { padding: 11px 0; border-bottom: 1px solid var(--line); color: var(--ink); }
+.ch-in li b { color: var(--gold); font-weight: 500; margin-right: 6px; }
+.ch-st ol { list-style: none; counter-reset: s; margin: 0; padding: 0; }
+.ch-st ol li { counter-increment: s; position: relative; padding: 0 0 20px 54px; color: var(--ink); }
+.ch-st ol li::before { content: counter(s); position: absolute; left: 0; top: -2px; width: 36px; height: 36px; border: 1px solid var(--gold); border-radius: 50%; display: grid; place-items: center; font: 500 .9rem var(--body); color: var(--gold); }
+.ch-tp li { padding: 8px 0 8px 22px; position: relative; color: var(--mute); }
+.ch-tp li::before { content: ''; position: absolute; left: 0; top: 1.05em; width: 8px; height: 1px; background: var(--gold); }
+.ch-h2 { margin-top: 44px; }
+.ch-prs { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 10px; }
+.ch-pr { padding: 9px 18px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink); text-decoration: none; font: 400 .95rem var(--body); }
+a.ch-pr { border-color: var(--gold); color: var(--gold); transition: background .25s, color .25s; }
+a.ch-pr:hover { background: var(--gold); color: #17110a; }
+@media (max-width: 820px) { .ch-rc { grid-template-columns: 1fr; } }
+/* hero: brighter spices, softer but still readable overlay */
+.hero > img { filter: brightness(1.22) saturate(1.1) contrast(1.05); }
+.hero::after { background: linear-gradient(90deg, rgba(8, 7, 6, .84) 0%, rgba(8, 7, 6, .52) 40%, rgba(8, 7, 6, .08) 78%, rgba(8, 7, 6, 0) 100%), linear-gradient(0deg, var(--bg) 0%, rgba(11, 11, 12, .55) 14%, transparent 38%), linear-gradient(180deg, rgba(8, 7, 6, .4) 0%, transparent 22%); }
+@media (max-width: 760px) { .hero::after { background: linear-gradient(0deg, rgba(8, 7, 6, .92) 6%, rgba(8, 7, 6, .5) 55%, rgba(8, 7, 6, .12)); } }
+.hero-t h1 { text-shadow: 0 2px 34px rgba(0, 0, 0, .7), 0 1px 3px rgba(0, 0, 0, .5); }
+.hero-s, .hero-t .kick { text-shadow: 0 1px 14px rgba(0, 0, 0, .75); }
+.hero::after { background: linear-gradient(90deg, rgba(8, 7, 6, .86) 0%, rgba(8, 7, 6, .62) 42%, rgba(8, 7, 6, .12) 80%, rgba(8, 7, 6, 0) 100%), linear-gradient(0deg, var(--bg) 0%, rgba(11, 11, 12, .72) 20%, rgba(11, 11, 12, .2) 44%, transparent 60%), linear-gradient(180deg, rgba(8, 7, 6, .4) 0%, transparent 22%); }
