@@ -921,3 +921,46 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
   .mb-r .mb-cap { margin-top: 10px; }
   .mb-close { margin-left: 4px; }
 }
+
+/* ===== HOVER LISTS OVER ONE BIG PICTURE (continents, Indian regions) ===== */
+.hl { position: relative; min-height: 100vh; display: flex; align-items: center; padding: clamp(80px, 12vh, 140px) 0; overflow: hidden; background: var(--deep); border-top: 1px solid var(--line); --g: #D98A18; }
+.hl-bg { position: absolute; inset: 0; z-index: 0; }
+.hl-bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.06); transition: opacity 1.3s ease; animation: kenburns 22s ease-in-out infinite alternate; }
+.hl-bg img.on { opacity: 1; }
+@keyframes kenburns { 0% { transform: scale(1.06) translate3d(0, 0, 0); } 100% { transform: scale(1.2) translate3d(-2.2%, -1.6%, 0); } }
+.hl::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(5, 5, 6, .94) 0%, rgba(5, 5, 6, .76) 46%, rgba(5, 5, 6, .3) 100%), linear-gradient(0deg, var(--bg) 0%, transparent 22%, transparent 78%, var(--bg) 100%); }
+.hl-glow { position: absolute; z-index: 2; right: -12%; top: 6%; width: 64vw; height: 64vw; max-width: 980px; max-height: 980px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, color-mix(in srgb, var(--g) 42%, transparent), transparent 62%); filter: blur(36px); mix-blend-mode: screen; animation: breathe 6s ease-in-out infinite; transition: background .8s; }
+@keyframes breathe { 0%, 100% { opacity: .45; transform: scale(.94); } 50% { opacity: .95; transform: scale(1.06); } }
+.hl-in { position: relative; z-index: 3; }
+.hl-in h2 { font-size: clamp(3.4rem, 7vw, 6rem); margin-bottom: .15em; }
+.hl-in .lead { max-width: 46ch; margin-bottom: clamp(28px, 5vh, 56px); }
+.hl-list { list-style: none; margin: 0; padding: 0; max-width: 780px; border-top: 1px solid rgba(243, 232, 210, .16); }
+.hl-list li { border-bottom: 1px solid rgba(243, 232, 210, .16); transition: opacity .5s; }
+.hl-list a { position: relative; display: flex; align-items: center; gap: clamp(14px, 3vw, 32px); padding: clamp(14px, 2.6vh, 24px) 0; transition: padding .45s cubic-bezier(.2, .8, .2, 1); }
+.hl-n { flex: none; width: 2.2em; font: 400 .8rem var(--body); letter-spacing: .2em; color: var(--gold); }
+.hl-t { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.hl-t strong { font: 500 clamp(1.9rem, 4.4vw, 3.4rem)/1.05 var(--head); color: rgba(243, 232, 210, .88); transition: color .4s, text-shadow .5s, letter-spacing .4s; }
+.hl-t small { margin-top: 5px; font-size: clamp(.92rem, 1.4vw, 1.08rem); color: var(--mute); transition: color .4s; }
+.hl-list em { flex: none; font: 400 .82rem var(--body); font-style: normal; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); opacity: 0; transform: translateX(-14px); transition: opacity .4s, transform .45s cubic-bezier(.2, .8, .2, 1); }
+.hl-list em i { display: inline-block; font-style: normal; }
+.hl.has-act .hl-list li { opacity: .3; }
+.hl.has-act .hl-list li.act { opacity: 1; }
+.hl-list li.act a, .hl-list a:focus-visible { padding-left: clamp(14px, 2.4vw, 30px); }
+.hl-list li.act .hl-t strong { color: #fff; text-shadow: 0 0 28px color-mix(in srgb, var(--g) 85%, transparent), 0 0 3px rgba(255, 255, 255, .6); letter-spacing: .01em; }
+.hl-list li.act .hl-t small { color: var(--ink); }
+.hl-list li.act em { opacity: 1; transform: none; }
+.hl-list li.act .hl-n { color: #fff; }
+.hl-list a::after { content: ''; position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; background: var(--g); box-shadow: 0 0 14px var(--g); transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s cubic-bezier(.2, .8, .2, 1); }
+.hl-list li.act a::after { transform: scaleX(1); }
+.hl-list a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .hl { min-height: 92vh; padding: 70px 0; }
+  .hl::before { background: linear-gradient(0deg, rgba(5, 5, 6, .88) 0%, rgba(5, 5, 6, .6) 60%, rgba(5, 5, 6, .35) 100%); }
+  .hl-list em { opacity: 1; transform: none; font-size: .7rem; }
+  .hl.has-act .hl-list li { opacity: .5; }
+  .hl-t strong { font-size: 1.7rem; }
+}
+@media (prefers-reduced-motion: reduce) { .hl-bg img, .hl-glow { animation: none; } }
+
+.fx-on .hl-list li.fx.in { transition-delay: 0ms; }
