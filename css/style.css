@@ -1534,3 +1534,17 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .hl-track { height: auto; }
 .hl-m { position: relative; top: auto; height: auto; min-height: 0; padding: clamp(80px, 11vh, 130px) 0; }
 .hl-m .hl-bar { display: none; }
+
+/* smaller cursor flower */
+.cur-fl .cf { left: -15px; top: -15px; width: 30px; height: 30px; }
+.cur-fl .cf svg { width: 100%; height: 100%; }
+.cur-fl.hov .cf { scale: 1.3; }
+.cur-fl .cur-lb { left: 20px; top: -11px; }
+/* back-to-top arrow */
+.up { position: fixed; left: clamp(14px, 2.4vw, 28px); bottom: clamp(14px, 2.4vw, 28px); z-index: 200; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: rgba(14, 14, 15, .82); color: var(--gold); border: 1px solid var(--gold); backdrop-filter: blur(6px); cursor: pointer; opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity .35s, transform .35s, background .25s, color .25s; }
+.up.on { opacity: 1; transform: none; pointer-events: auto; }
+.up:hover { background: var(--gold); color: #17110a; }
+@media (max-width: 620px) { .up { width: 40px; height: 40px; } }
+.cur-fl .cf { left: -17px; top: -17px; width: 34px; height: 34px; }
+.cur-fl .cf { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
+.cur-fl.hov .cf { filter: drop-shadow(0 2px 8px rgba(217, 138, 24, .7)); }

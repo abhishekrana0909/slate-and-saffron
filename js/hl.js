@@ -186,3 +186,11 @@
     }, { threshold: .35 }).observe(sec);
   }
 })();
+
+// ---- Back-to-top arrow, bottom left ----
+(function () {
+  var b = document.getElementById('up'); if (!b) return;
+  function f() { b.classList.toggle('on', (window.scrollY || document.documentElement.scrollTop) > 500); }
+  window.addEventListener('scroll', f, { passive: true }); f();
+  b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
+})();

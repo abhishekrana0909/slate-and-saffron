@@ -1,14 +1,14 @@
-// Custom cursor: a saffron crocus flower that follows the pointer, sways as you move, blooms over clickable things and drops golden pollen.
+// Custom cursor: a few saffron threads that follows the pointer, sways as you move, blooms over clickable things and drops golden pollen.
 // Only for a real mouse. Touch screens and "reduce motion" keep the normal cursor.
 (function () {
   if (!matchMedia('(pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var root = document.documentElement;
   var petals = '';
   for (var a = 0; a < 360; a += 60) petals += '<g transform="rotate(' + a + ')"><ellipse cx="0" cy="-13" rx="6.6" ry="14" fill="url(#cfp)"/><path d="M0 -4 L0 -24" stroke="#4B2F86" stroke-opacity=".45" stroke-width=".8"/><path d="M-2.4 -5 Q-3 -15 -2 -23 M2.4 -5 Q3 -15 2 -23" stroke="#4B2F86" stroke-opacity=".28" stroke-width=".6" fill="none"/></g>';
-  var svg = '<svg viewBox="-30 -30 60 60" width="56" height="56" aria-hidden="true"><defs><radialGradient id="cfp" cx="50%" cy="85%" r="95%"><stop offset="0" stop-color="#C9B3F0"/><stop offset=".55" stop-color="#9577D3"/><stop offset="1" stop-color="#5E3FA3"/></radialGradient></defs>' +
-    '<g class="cf-p">' + petals + '</g>' +
-    '<g class="cf-s" fill="none" stroke-linecap="round"><path d="M0 0 C 3 -6 9 -10 12 -19" stroke="#E0361F" stroke-width="2.4"/><path d="M0 0 C -1 -7 -1 -12 -2 -22" stroke="#EA4A27" stroke-width="2.4"/><path d="M0 0 C -4 -6 -10 -9 -13 -17" stroke="#D12B1A" stroke-width="2.4"/></g>' +
-    '<circle r="3.6" fill="#F4B520"/><circle r="1.4" fill="#fff3c4"/></svg>';
+  var svg = '<svg viewBox="-30 -30 60 60" width="56" height="56" aria-hidden="true">' +
+    '<g class="cf-p"></g>' +
+    '<g class="cf-s" fill="none" stroke-linecap="round"><path d="M0 6 C 3 -4 9 -12 13 -24" stroke="#E0361F" stroke-width="3.4"/><path transform="translate(13 -24) rotate(25)" d="M-3.6 -5 L0 1 L3.6 -5 Z" fill="#E0361F" stroke="#E0361F" stroke-width="1.6" stroke-linejoin="round"/><path d="M0 6 C -1 -6 -1 -14 -2 -27" stroke="#EA4A27" stroke-width="3.4"/><path transform="translate(-2 -27) rotate(-3)" d="M-3.6 -5 L0 1 L3.6 -5 Z" fill="#EA4A27" stroke="#EA4A27" stroke-width="1.6" stroke-linejoin="round"/><path d="M0 6 C -4 -4 -10 -10 -14 -21" stroke="#C92A18" stroke-width="3.4"/><path transform="translate(-14 -21) rotate(-28)" d="M-3.6 -5 L0 1 L3.6 -5 Z" fill="#C92A18" stroke="#C92A18" stroke-width="1.6" stroke-linejoin="round"/></g></svg>';
+
   var fl = document.createElement('div'), cf = document.createElement('div'), lb = document.createElement('span');
   fl.className = 'cur-fl'; cf.className = 'cf'; cf.innerHTML = svg; lb.className = 'cur-lb';
   fl.appendChild(cf); fl.appendChild(lb); fl.setAttribute('aria-hidden', 'true');
