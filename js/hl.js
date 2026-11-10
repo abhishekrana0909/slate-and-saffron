@@ -151,6 +151,10 @@
   }
   var ch = document.getElementById('chutney');
   if (ch) {
+    var co = ch.querySelector('.ch-open'), cp = ch.querySelector('.ch-panel'), cx = ch.querySelector('.ch-x');
+    function openCh() { cp.hidden = false; co.hidden = true; co.setAttribute('aria-expanded', 'true'); }
+    co.addEventListener('click', function () { openCh(); cp.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    cx.addEventListener('click', function () { cp.hidden = true; co.hidden = false; co.setAttribute('aria-expanded', 'false'); ch.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     var bs = [].slice.call(ch.querySelectorAll('.ch-f button')), cs = [].slice.call(ch.querySelectorAll('.ch-c'));
     bs.forEach(function (b) { b.addEventListener('click', function () { bs.forEach(function (z) { z.classList.toggle('on', z === b); }); cs.forEach(function (c) { c.hidden = !!b.dataset.r && c.dataset.r !== b.dataset.r; }); }); });
   }

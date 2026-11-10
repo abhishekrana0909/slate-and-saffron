@@ -1446,3 +1446,10 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 @media (max-width: 1100px) { .ch-g { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) { .ch-g { grid-template-columns: repeat(2, 1fr); } .pj-front { min-height: 60vh; } }
 @media (max-width: 480px) { .ch-g { grid-template-columns: 1fr; } }
+
+.ch-front { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.ch-open { margin-top: 22px; }
+.ch-open[hidden], .ch-panel[hidden] { display: none; }
+.ch-panel { margin-top: 40px; padding: clamp(22px, 3vw, 40px); background: rgba(10, 13, 10, .92); border: 1px solid rgba(155, 210, 122, .3); animation: rpIn .6s cubic-bezier(.2, .8, .2, 1); }
+.ch-panel .pj-ph h3 { color: #9BD27A; }
+.ch-bg { opacity: .55; }
