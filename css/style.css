@@ -1770,3 +1770,4 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
   .hero-t h1 { font-size: clamp(3.4rem, 7.6vw, 8rem); }
   .hero-t > * { max-width: min(100%, 760px); }
 }
+.hero > img { filter: brightness(1.1) saturate(1.15) contrast(.97); }
