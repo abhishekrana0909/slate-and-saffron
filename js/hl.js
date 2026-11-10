@@ -93,6 +93,19 @@
       a.addEventListener('focus', function () { show(k, true); });
     });
     sec.querySelector('.th-ring').addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse' || !e.pointerType) show(cur, false); });
+    var pw = sec.querySelector('.th-panel'), rps = pw ? [].slice.call(pw.querySelectorAll('.th-rp')) : [];
+    function openRegion(k) {
+      if (!pw) return;
+      pw.hidden = false;
+      rps.forEach(function (p, i) { p.hidden = i !== k; });
+      lis.forEach(function (l, i) { l.classList.toggle('sel', i === k); });
+      show(k, true);
+      pw.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' });
+    }
+    function closeRegion() { if (pw) { pw.hidden = true; lis.forEach(function (l) { l.classList.remove('sel'); }); show(cur, false); stage.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
+    function reduce() { return matchMedia('(prefers-reduced-motion: reduce)').matches; }
+    lis.forEach(function (li, k) { li.querySelector('a').addEventListener('click', function (e) { if (pw) { e.preventDefault(); openRegion(k); } }); });
+    rps.forEach(function (p) { var x = p.querySelector('.th-x'); if (x) x.addEventListener('click', closeRegion); });
     layout(); show(0, false);
     var rt = 0;
     window.addEventListener('resize', function () { cancelAnimationFrame(rt); rt = requestAnimationFrame(layout); });
