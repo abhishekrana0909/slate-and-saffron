@@ -1689,3 +1689,40 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .dr .rcs:first-of-type { margin-top: 28px; }
 .dr .rcs { scroll-margin-top: 130px; }
 .rc[hidden], .rcs[hidden] { display: none !important; }
+
+/* ===== PLATE TILES (final card design): own gradient, round plate photo, name + two lines always shown ===== */
+.rp-grid, .rc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; grid-auto-flow: row; }
+.rp-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.rp-c, .rc { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; aspect-ratio: auto; min-height: 0; overflow: hidden; padding: 28px 22px 22px; border: 1px solid color-mix(in srgb, var(--pc, #6f3f1a) 55%, #000); border-radius: 10px; background: radial-gradient(120% 80% at 50% 0%, color-mix(in srgb, var(--pc, #6f3f1a) 100%, #fff 6%) 0%, color-mix(in srgb, var(--pc, #6f3f1a) 55%, #0d0c0b) 58%, #0d0c0b 100%); isolation: isolate; transition: transform .5s cubic-bezier(.2, .8, .2, 1), box-shadow .5s, border-color .4s; }
+.rp-grid:not(.two) .rp-c:nth-child(6n + 1) { grid-column: auto; min-height: 0; aspect-ratio: auto; }
+.rp-c::before, .rc::before { display: none; }
+.rp-c:hover, .rc:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 32px 56px -28px color-mix(in srgb, var(--pc, #6f3f1a) 90%, #000); }
+.rp-i, .rc-i { position: relative !important; inset: auto !important; z-index: 1; display: block; width: min(74%, 250px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 2px solid var(--gold); box-shadow: 0 0 0 7px rgba(8, 7, 6, .35), 0 22px 40px -14px rgba(0, 0, 0, .75); background: #111; }
+.rp-i img, .rc-i img { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; aspect-ratio: auto; object-fit: cover; z-index: 0 !important; filter: saturate(1.1) contrast(1.05); transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.rp-c:hover .rp-i img, .rc:hover .rc-i img { transform: scale(1.1) rotate(2deg); }
+.rc-i::after { display: none; }
+.rp-c > img { display: none; }
+.rp-tg, .rc-b { position: absolute; left: 14px; top: 14px; z-index: 3; padding: 4px 12px; background: var(--gold); color: #17110a; font: 500 .64rem var(--body); letter-spacing: .16em; text-transform: uppercase; }
+.rc-b { background: var(--m1, var(--gold)); }
+.rc-r, .rc-go, .rc-tg, .rc-m .stars { display: none; }
+.rp-c strong, .rc-in h3 { position: static; font: 500 1.4rem/1.2 var(--head); letter-spacing: .005em; color: #fff; text-shadow: none; margin: 0; }
+.rc-in h3 a { color: #fff; }
+.rc-in { position: static; padding: 0; gap: 8px; align-items: center; width: 100%; flex: 1; z-index: 2; }
+.rp-c em, .rc-d { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-height: none; opacity: .88; transform: none; font: 300 .95rem/1.5 var(--body); font-style: normal; color: #f3e8d2; margin: 8px 0 0; padding: 0; transition: none; }
+.rp-c em { min-height: 3em; }
+.rc-d { order: 2; min-height: 3em; }
+.rp-ch, .rc-m { order: 3; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 14px 0 0; padding: 0; }
+.rp-ch b, .rc-m > span { font: 500 .66rem var(--body); letter-spacing: .14em; text-transform: uppercase; color: #f3e8d2; padding: 5px 11px; border: 1px solid rgba(243, 232, 210, .35); background: rgba(8, 7, 6, .35); border-radius: 99px; backdrop-filter: none; }
+.rp-ch b.spice, .rc-m .spice { display: inline-flex; align-items: center; gap: 3px; padding: 7px 11px; }
+.rc-m .spice em { display: none; }
+.rc-in h3 a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+.rc-sv { z-index: 4; top: 12px; right: 12px; }
+@media (max-width: 1000px) { .rp-grid, .rc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .rp-grid, .rc-grid, .rp-grid.two { grid-template-columns: 1fr; gap: 16px; } .rp-i, .rc-i { width: min(62%, 220px); } .rc-d { display: -webkit-box; } }
+@media (hover: none) { .rp-bt em { max-height: none; } }
+
+/* continent pages: traditional cover then the recipes */
+.cz2.sub { padding-bottom: 10px; }
+.cz2 .pj-front { min-height: 52vh; }
+.cz2 + .dark.sec { padding-top: 30px; }
+.cz2 .pj-bg { filter: brightness(1.2) saturate(1.1); } .cz2 .pj-bd { opacity: .78; }
