@@ -138,6 +138,17 @@
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }
 
+  // ----- floating photos: only the ones on screen animate (the hero photo is left out) -----
+  var fio = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('flo-vis', e.isIntersecting); }); }, { rootMargin: '120px' });
+  $$('.pc, .regc, .feat-c, .rc, .xc, .plate, .cz-b, .story img', main).forEach(function (el) {
+    if (el.closest('.mb-pg,.mb-src,.bk,.hero')) return;
+    el.classList.add('flo');
+    el.style.setProperty('--fd', (-Math.random() * 8).toFixed(2) + 's');
+    el.style.setProperty('--fdur', (6 + Math.random() * 3.5).toFixed(2) + 's');
+    fio.observe(el);
+  });
+  var sun = document.createElement('div'); sun.className = 'fx-sun'; sun.setAttribute('aria-hidden', 'true'); document.body.appendChild(sun);
+
   // ----- 5. progress line, cursor glow, card tilt -----
   var bar = document.createElement('div'); bar.className = 'fx-bar'; document.body.appendChild(bar);
   if (!coarse) {
@@ -149,7 +160,7 @@
       var card = e.target.closest ? e.target.closest('.pc, .regc, .cs-tall') : null;
       if (card) {
         var b = card.getBoundingClientRect(), x = (e.clientX - b.left) / b.width - .5, y = (e.clientY - b.top) / b.height - .5;
-        card.style.transform = 'perspective(900px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 9).toFixed(2) + 'deg) translateZ(0)';
+        card.style.transform = 'perspective(900px) rotateX(' + (-y * 3.5).toFixed(2) + 'deg) rotateY(' + (x * 4.5).toFixed(2) + 'deg) translateZ(0)';
       }
     }, { passive: true });
     document.addEventListener('pointerout', function (e) {
