@@ -167,7 +167,7 @@
   });
 })();
 
-// The Menu: an open book on the home page. Pages turn only when you click (the arrows, either page, a dish in the contents), press the arrow keys or swipe.
+// The Menu: a book that starts closed. Click the cover to open it. Pages turn only when you click (the arrows, either page, a dish in the contents), press the arrow keys or swipe.
 (function () {
   var sec = document.getElementById('menuBook');
   if (!sec) return;
@@ -175,7 +175,8 @@
   var prevB = document.getElementById('mbPrev'), nextB = document.getElementById('mbNext');
   var spreadEl = mb.querySelector('.mb-spread');
   var src = [].slice.call(mb.querySelectorAll('.mb-src > div')).map(function (d) { return d.innerHTML; });
-  var spreads = src.length / 2, cur = 0, mp = 0, busy = false, goal = null, last = src.length - 1, swiped = 0;
+  var spreads = src.length / 2, cur = 0, mp = 0, busy = false, goal = null, last = src.length - 1, swiped = 0, opened = false;
+  var cover = document.getElementById('mbCover'), closeB = document.getElementById('mbClose'), cvTimer = 0;
   var small = function () { return matchMedia('(max-width: 760px)').matches; };
   var reduce = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
 
@@ -213,19 +214,39 @@
   }
   function flipTo(t) { goal = Math.min(spreads - 1, Math.max(0, t)); step(); }
   function go(dir) {
+    if (!opened) return;
     if (small()) { var p = mp + dir; if (p >= 0 && p < src.length) setSingle(p, dir); return; }
     flipTo((goal === null ? cur : goal) + dir);
   }
-  function jump(page) { if (small()) setSingle(page, page > mp ? 1 : -1); else flipTo(Math.floor(page / 2)); }
-  function init() { goal = null; if (small()) setSingle(0); else setSpread(0); }
+  function jump(page) { if (!opened) return; if (small()) setSingle(page, page > mp ? 1 : -1); else flipTo(Math.floor(page / 2)); }
+  function init() {
+    clearTimeout(cvTimer); goal = null; opened = false;
+    mb.dataset.s = 'closed'; mb.classList.remove('done', 'quick');
+    if (small()) setSingle(0); else setSpread(0);
+  }
+  function openBook() {
+    if (opened) return;
+    opened = true; clearTimeout(cvTimer);
+    var quick = reduce(); mb.classList.toggle('quick', quick);
+    mb.dataset.s = 'open';
+    var done = function () { mb.classList.add('done'); nextB.focus({ preventScroll: true }); };
+    if (quick) done(); else cvTimer = setTimeout(done, 1050);
+  }
+  function closeBook() {
+    if (!opened) return;
+    opened = false; goal = null; mb.classList.remove('done', 'quick'); mb.dataset.s = 'closed';
+    cvTimer = setTimeout(function () { if (!opened) { if (small()) setSingle(0); else setSpread(0); cover.focus({ preventScroll: true }); } }, reduce() ? 0 : 900);
+  }
 
+  cover.addEventListener('click', openBook);
+  closeB.addEventListener('click', closeBook);
   prevB.addEventListener('click', function () { go(-1); });
   nextB.addEventListener('click', function () { go(1); });
-  R.addEventListener('click', function (e) { if (Date.now() - swiped < 400 || e.target.closest('a,button')) return; go(1); });
+  R.addEventListener('click', function (e) { if (!opened || Date.now() - swiped < 400 || e.target.closest('a,button')) return; go(1); });
   L.addEventListener('click', function (e) {
-    if (Date.now() - swiped < 400) return;
+    if (!opened || Date.now() - swiped < 400) return;
     var a = e.target.closest('.mb-toc a');
-    if (a) { e.preventDefault(); jump(1 + [].indexOf.call(a.parentNode.parentNode.children, a.parentNode)); return; }
+    if (a) { e.preventDefault(); jump(2 + [].indexOf.call(a.parentNode.parentNode.children, a.parentNode)); return; }
     if (!e.target.closest('a,button')) go(-1);
   });
   window.addEventListener('resize', function () { if (small() !== (L.innerHTML === '')) init(); });
