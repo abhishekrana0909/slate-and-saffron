@@ -15,6 +15,7 @@
     function show(i, light) {
       cur = i;
       imgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
+      bgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
       items.forEach(function (li, k) { li.classList.toggle('act', light && k === i); });
       sec.classList.toggle('has-act', !!light);
       sec.style.setProperty('--g', items[i].dataset.g || '#D98A18');
@@ -59,6 +60,7 @@
   [].slice.call(document.querySelectorAll('.th')).forEach(function (sec) {
     var stage = sec.querySelector('.th-stage');
     var imgs = [].slice.call(sec.querySelectorAll('.th-plate img'));
+    var bgs = [].slice.call(sec.querySelectorAll('.th-bgs img'));
     var lis = [].slice.call(sec.querySelectorAll('.th-ring li'));
     var n = lis.length, cur = 0, timer = 0, spokes = [];
     lis.forEach(function () { var sp = document.createElement('i'); sp.className = 'th-spoke'; stage.appendChild(sp); spokes.push(sp); });
@@ -82,6 +84,7 @@
     function show(i, light) {
       cur = i;
       imgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
+      bgs.forEach(function (im, k) { im.classList.toggle('on', k === i); });
       lis.forEach(function (li, k) { li.classList.toggle('act', light && k === i); });
       spokes.forEach(function (sp, k) { sp.classList.toggle('on', light && k === i); });
       sec.classList.toggle('has-act', !!light);
