@@ -1548,3 +1548,4 @@ html.cur-on input:not([type="checkbox"]), html.cur-on textarea { cursor: text !i
 .cur-fl .cf { left: -17px; top: -17px; width: 34px; height: 34px; }
 .cur-fl .cf { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
 .cur-fl.hov .cf { filter: drop-shadow(0 2px 8px rgba(217, 138, 24, .7)); }
+.up { left: auto; right: clamp(14px, 2.4vw, 28px); }
