@@ -1771,3 +1771,15 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
   .hero-t > * { max-width: min(100%, 760px); }
 }
 .hero > img { filter: brightness(1.1) saturate(1.15) contrast(.97); }
+
+/* chef's picks */
+.cp-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+.cp-h h2 { margin: 0; }
+.cp-h .lead { margin: 6px 0 0; }
+.cp-g { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.cp-g .rp-c:first-child { grid-column: span 2; grid-row: span 2; }
+.cp-g .rp-c:first-child .rp-i { aspect-ratio: auto; flex: 1; min-height: 320px; }
+.cp-g .rp-c:first-child .rp-bd strong { font-size: clamp(1.9rem, 2.6vw, 2.5rem); }
+.cp-g .rp-c:first-child .rp-bd em { -webkit-line-clamp: 3; font-size: 1.02rem; }
+@media (max-width: 1000px) { .cp-g { grid-template-columns: repeat(2, minmax(0, 1fr)); } .cp-g .rp-c:first-child { grid-column: span 2; grid-row: auto; } .cp-g .rp-c:first-child .rp-i { aspect-ratio: 16 / 9; flex: none; min-height: 0; } }
+@media (max-width: 620px) { .cp-g { grid-template-columns: 1fr; } .cp-g .rp-c:first-child { grid-column: auto; } }
