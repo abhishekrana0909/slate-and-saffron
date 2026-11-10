@@ -1593,3 +1593,99 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .pj:not(.sub) .pj-t { font-size: clamp(2.8rem, 6.5vw, 5rem); }
 .ch:not(.sub) .ch-t { font-size: clamp(2.8rem, 6.2vw, 4.6rem); }
 .pj:not(.sub) .lead, .ch:not(.sub) .lead { font-size: 1rem; max-width: 52ch; }
+
+/* ===== RICH RECIPE CARDS (rp-c: region, Punjabi and mood pages) ===== */
+.rp-grid { grid-auto-flow: dense; gap: 20px; }
+.rp-c { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid var(--line); background: #111; isolation: isolate; transition: transform .5s cubic-bezier(.2, .8, .2, 1), border-color .4s, box-shadow .5s; }
+.rp-c > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: saturate(1.12) contrast(1.06) brightness(.95); transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.rp-c::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(6, 5, 5, .94) 0%, rgba(6, 5, 5, .55) 34%, rgba(6, 5, 5, 0) 62%), linear-gradient(180deg, rgba(6, 5, 5, .35), transparent 22%); transition: opacity .5s; }
+.rp-c:hover { transform: translateY(-6px); border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), 0 30px 54px -26px rgba(217, 138, 24, .65); }
+.rp-c:hover > img { transform: scale(1.08); }
+.rp-tg { position: absolute; left: 14px; top: 14px; padding: 4px 12px; background: var(--gold); color: #17110a; font: 500 .66rem var(--body); letter-spacing: .16em; text-transform: uppercase; }
+.rp-bt { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 9px; }
+.rp-bt strong { font: 400 clamp(1.7rem, 2.3vw, 2.15rem)/1.05 var(--script); color: #fff; text-shadow: 0 2px 16px rgba(0, 0, 0, .7); }
+.rp-ch { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rp-ch b { font: 500 .66rem var(--body); letter-spacing: .14em; text-transform: uppercase; color: #f3e8d2; padding: 4px 10px; border: 1px solid rgba(217, 138, 24, .55); background: rgba(8, 7, 6, .55); backdrop-filter: blur(4px); }
+.rp-ch b.spice { display: inline-flex; align-items: center; padding: 6px 10px; gap: 3px; }
+.rp-bt em { font: 300 .9rem/1.45 var(--body); font-style: normal; color: rgba(243, 232, 210, .9); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-height: 0; opacity: 0; transform: translateY(10px); transition: max-height .55s cubic-bezier(.2, .8, .2, 1), opacity .45s, transform .55s cubic-bezier(.2, .8, .2, 1); }
+.rp-c:hover .rp-bt em, .rp-c:focus-visible .rp-bt em { max-height: 5.2em; opacity: 1; transform: none; }
+.rp-grid:not(.two) .rp-c:nth-child(6n + 1) { grid-column: span 2; aspect-ratio: auto; min-height: 320px; }
+.rp-grid:not(.two) .rp-c:nth-child(6n + 1) .rp-bt strong { font-size: clamp(2.2rem, 3.4vw, 3rem); }
+@media (max-width: 1000px) { .rp-grid { grid-template-columns: repeat(2, 1fr); } .rp-grid:not(.two) .rp-c:nth-child(6n + 1) { aspect-ratio: 16 / 10; } }
+@media (hover: none) { .rp-bt em { max-height: 4.4em; opacity: 1; transform: none; } }
+@media (max-width: 560px) { .rp-grid { gap: 12px; } .rp-bt { padding: 12px; } .rp-bt strong { font-size: 1.45rem; } .rp-bt em { display: none; } .rp-tg { left: 8px; top: 8px; font-size: .58rem; padding: 3px 8px; } }
+
+/* ===== RICH RECIPE CARDS (rc: recipes, continents, mocktails) ===== */
+.rc-grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px; }
+.rc { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; padding: 0; background: #111; border: 1px solid var(--line); isolation: isolate; transition: transform .5s cubic-bezier(.2, .8, .2, 1), border-color .4s, box-shadow .5s; }
+.rc:hover { transform: translateY(-6px); border-color: var(--m1); box-shadow: 0 0 0 1px var(--m1), 0 30px 54px -26px var(--m1); }
+.rc-i { position: absolute; inset: 0; z-index: -2; }
+.rc-i img { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; filter: saturate(1.12) contrast(1.06) brightness(.95); transition: transform 1.2s cubic-bezier(.2, .7, .2, 1); }
+.rc:hover .rc-i img { transform: scale(1.08); }
+.rc-i::after { background: linear-gradient(0deg, rgba(6, 5, 5, .94) 0%, rgba(6, 5, 5, .55) 36%, rgba(6, 5, 5, 0) 64%), linear-gradient(180deg, rgba(6, 5, 5, .35), transparent 22%); }
+.rc-r, .rc-go { display: none; }
+.rc-b { z-index: 2; background: var(--m1); }
+.rc-in { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 18px 20px; gap: 9px; z-index: 2; }
+.rc-in h3 { font: 400 clamp(1.8rem, 2.4vw, 2.2rem)/1.05 var(--script); color: #fff; text-shadow: 0 2px 16px rgba(0, 0, 0, .7); }
+.rc-in h3 a { color: #fff; }
+.rc-in h3 a::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+.rc-sv { z-index: 3; }
+.rc-m { order: 2; gap: 6px; margin: 0; }
+.rc-m > span { font: 500 .66rem var(--body); letter-spacing: .14em; text-transform: uppercase; color: #f3e8d2; padding: 4px 10px; border: 1px solid color-mix(in srgb, var(--m1) 70%, transparent); background: rgba(8, 7, 6, .55); backdrop-filter: blur(4px); }
+.rc-m .stars { display: none; }
+.rc-m .spice { display: inline-flex; align-items: center; padding: 6px 10px; gap: 3px; }
+.rc-m .spice em { display: none; }
+.rc-d { order: 3; color: rgba(243, 232, 210, .9); font-size: .9rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; max-height: 0; opacity: 0; transform: translateY(10px); transition: max-height .55s cubic-bezier(.2, .8, .2, 1), opacity .45s, transform .55s cubic-bezier(.2, .8, .2, 1); }
+.rc:hover .rc-d { max-height: 5.2em; opacity: 1; transform: none; }
+.rc-tg { order: 4; display: none; }
+@media (hover: none) { .rc-d { max-height: 4.4em; opacity: 1; transform: none; } }
+@media (max-width: 560px) { .rc-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .rc-in { padding: 12px; } .rc-in h3 { font-size: 1.45rem; } .rc-d { display: none; } }
+
+/* ===== recipes page: continent covers ===== */
+.rcs { margin-top: 72px; padding-top: 0; border-top: 0; }
+.rcs-h { position: relative; display: block; min-height: clamp(190px, 26vw, 280px); margin-bottom: 26px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--m1) 45%, transparent); }
+.rcs-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.1) brightness(.9); transform: scale(1.04); transition: transform 2s cubic-bezier(.2, .7, .2, 1); }
+.rcs:hover .rcs-bg { transform: scale(1.1); }
+.rcs-h::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(6, 5, 5, .92) 0%, rgba(6, 5, 5, .55) 52%, rgba(6, 5, 5, .1) 100%), linear-gradient(0deg, rgba(6, 5, 5, .5), transparent 40%); }
+.rcs-t { position: absolute; z-index: 2; left: clamp(20px, 4vw, 48px); bottom: clamp(18px, 3vw, 34px); right: 20px; }
+.rcs-n { font: 500 .8rem var(--body); letter-spacing: .3em; color: var(--m1); margin: 0 0 4px; }
+.rcs-t h2 { font: 400 clamp(3rem, 6.4vw, 5.2rem)/1 var(--script); color: #fff; margin: 0; text-shadow: 0 2px 24px rgba(0, 0, 0, .6); }
+.rcs-t > p:last-child { margin: 6px 0 0; color: var(--ink); font-size: .86rem; letter-spacing: .14em; text-transform: uppercase; }
+
+/* ===== recipe page ===== */
+.rhero { position: relative; height: min(70vh, 700px); }
+.rhero img { filter: saturate(1.12) contrast(1.05) brightness(.9); }
+.rhero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg) 0%, rgba(8, 7, 6, .7) 24%, rgba(8, 7, 6, .15) 60%, rgba(8, 7, 6, .35) 100%); }
+.rh-o { position: absolute; z-index: 2; left: 0; right: 0; bottom: clamp(24px, 5vw, 56px); }
+.rh-o h1 { font: 400 clamp(3.2rem, 8.6vw, 7.2rem)/.98 var(--script); color: #fff; margin: 0 0 .1em; text-shadow: 0 2px 34px rgba(0, 0, 0, .7); text-transform: none; }
+.rh-o .lead { max-width: 52ch; color: var(--ink); margin: 0; text-shadow: 0 1px 14px rgba(0, 0, 0, .8); }
+.rh-o .kick { color: var(--gold); }
+.r-st { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--gold); border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.r-st > div { padding: 18px 16px; text-align: center; border-right: 1px solid var(--line); }
+.r-st > div:last-child { border-right: 0; }
+.r-st small { display: block; font: 400 .68rem var(--body); letter-spacing: .24em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.r-st b { font: 500 1.5rem var(--head); color: var(--ink); }
+.doc { padding-top: 28px; }
+.ing { background: linear-gradient(180deg, #151514, #0e0e0f); border: 1px solid var(--line); border-top: 2px solid var(--gold); padding: 26px 24px 20px; box-shadow: 0 30px 60px -40px rgba(0, 0, 0, .9); }
+.ing h2 { margin-top: 0; }
+.ing li { transition: background .25s; }
+.ing li:hover { background: rgba(217, 138, 24, .06); }
+.met ol { position: relative; }
+.met ol::before { content: ''; position: absolute; left: 22px; top: 18px; bottom: 18px; width: 1px; background: var(--line); }
+.met ol::after { content: ''; position: absolute; left: 22px; top: 18px; width: 1px; height: calc((100% - 36px) * var(--p, 0)); background: var(--gold); box-shadow: 0 0 10px var(--gold); transition: height .25s linear; }
+.met li { gap: 22px; padding: 18px 0; border-bottom: 0; position: relative; }
+.met li .n { position: relative; z-index: 1; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--gold); background: var(--bg); display: grid; place-items: center; font: 500 1.2rem var(--head); color: var(--gold); transition: background .3s, color .3s; }
+.met li:hover .n { background: var(--gold); color: #17110a; }
+.met li p { flex: 1; padding-top: 8px; font-size: 1.08rem; line-height: 1.7; }
+.met aside { padding: 22px 24px; margin-top: 30px; border: 1px solid var(--line); background: rgba(255, 255, 255, .025); }
+.met aside:first-of-type { border-left: 3px solid var(--gold); background: rgba(217, 138, 24, .07); }
+@media (max-width: 700px) { .r-st { grid-template-columns: repeat(2, 1fr); } .r-st > div:nth-child(2) { border-right: 0; } .r-st > div:nth-child(-n + 2) { border-bottom: 1px solid var(--line); } .ing { position: static; } .rhero { height: 58vh; } }
+
+/* mocktail bar */
+.dr-w { padding-bottom: 60px; }
+.dr-jump { position: sticky; top: 64px; z-index: 40; padding: 12px 0; margin: 0 0 6px; background: linear-gradient(180deg, var(--bg) 70%, transparent); backdrop-filter: blur(6px); }
+.dr-jump a small { opacity: .6; margin-left: 4px; }
+.dr-f { margin: 6px 0 4px; }
+.dr .rcs:first-of-type { margin-top: 28px; }
+.dr .rcs { scroll-margin-top: 130px; }
+.rc[hidden], .rcs[hidden] { display: none !important; }

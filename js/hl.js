@@ -194,3 +194,25 @@
   window.addEventListener('scroll', f, { passive: true }); f();
   b.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); });
 })();
+
+// ---- Recipe steps: the gold line fills as you read down ----
+(function () {
+  var ol = document.querySelector('.met ol'); if (!ol) return;
+  function f() { var r = ol.getBoundingClientRect(), h = window.innerHeight; var p = (h * .6 - r.top) / Math.max(1, r.height); ol.style.setProperty('--p', Math.max(0, Math.min(1, p)).toFixed(3)); }
+  window.addEventListener('scroll', f, { passive: true }); window.addEventListener('resize', f); f();
+})();
+
+// ---- Mocktail bar: filter by drink type ----
+(function () {
+  var f = document.querySelector('.dr-f'); if (!f) return;
+  var chips = [].slice.call(f.querySelectorAll('.chip')), cards = [].slice.call(document.querySelectorAll('.dr .rc')), secs = [].slice.call(document.querySelectorAll('.dr .rcs')), none = document.getElementById('drNone');
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      chips.forEach(function (z) { z.classList.toggle('on', z === c); });
+      var k = c.dataset.dt, shown = 0;
+      cards.forEach(function (d) { var ok = !k || (d.dataset.dt || '').split(' ').indexOf(k) >= 0; d.hidden = !ok; if (ok) shown++; });
+      secs.forEach(function (sc) { sc.hidden = ![].some.call(sc.querySelectorAll('.rc'), function (d) { return !d.hidden; }); });
+      if (none) none.hidden = shown > 0;
+    });
+  });
+})();
