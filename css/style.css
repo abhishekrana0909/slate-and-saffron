@@ -1764,3 +1764,9 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
   .hero-q { max-width: 540px; }
   .hero-t > * { max-width: min(100%, 640px); }
 }
+@media (min-width: 901px) {
+  .hero-t.wrap { max-width: none; margin: 0; padding-left: clamp(24px, 6vw, 120px); padding-right: 0; }
+  .hero > img { width: 58%; }
+  .hero-t h1 { font-size: clamp(3.4rem, 7.6vw, 8rem); }
+  .hero-t > * { max-width: min(100%, 760px); }
+}
