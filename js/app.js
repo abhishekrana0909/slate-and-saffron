@@ -36,21 +36,49 @@
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if ('IntersectionObserver' in window && !reduce) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -6% 0px' });
-    document.querySelectorAll('.rc, .xc, .regtiles a').forEach(function (el) { el.classList.add('rv'); io.observe(el); });
+    document.querySelectorAll('.rc, .xc, .regc, .mood, .seaz, .feat-c').forEach(function (el) { el.classList.add('rv'); io.observe(el); });
   }
+
+  // ----- menu button on small screens -----
+  var burger = $('burger');
+  if (burger) {
+    var topbar = burger.closest('.top');
+    burger.addEventListener('click', function () { var o = topbar.classList.toggle('open'); burger.setAttribute('aria-expanded', o ? 'true' : 'false'); burger.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && topbar.classList.contains('open')) { burger.click(); burger.focus(); } });
+  }
+
+  // ----- save hearts on cards -----
+  var savedList = store.get('ga:saved', []);
+  var paintHearts = function () { document.querySelectorAll('.rc-sv').forEach(function (b) { var on = savedList.indexOf(b.dataset.id) >= 0; b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? '♥' : '♡'; }); };
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.rc-sv') : null; if (!b) return;
+    var i = savedList.indexOf(b.dataset.id); if (i >= 0) savedList.splice(i, 1); else savedList.push(b.dataset.id);
+    store.set('ga:saved', savedList); paintHearts();
+  });
+  paintHearts();
+
+  // ----- newsletter (no mail service is connected yet, so the address stays on this device) -----
+  var news = $('news');
+  if (news) news.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var em = $('nEmail').value.trim(), m = $('newsM');
+    if (!/^[^@s]+@[^@s]+.[^@s]+$/.test(em)) { m.textContent = 'Please enter a valid email address.'; return; }
+    store.set('ga:news', em); m.textContent = 'Thank you. Your seat is noted. Sunday emails begin once the newsletter is switched on.'; $('nEmail').value = '';
+  });
 
   // ----- filters on listing pages -----
   var bar = document.querySelector('.fbar');
   if (bar) {
     var grid = $(bar.dataset.grid), cards = [].slice.call(grid.querySelectorAll('.rc'));
-    var st = { q: '', f: {}, reg: '', c: '', m: '' };
+    var st = { q: '', f: {}, reg: '', c: '', m: '', mo: '', se: '' };
     var chips = bar.querySelectorAll('.chip[data-f]'), regs = bar.querySelectorAll('.chip[data-reg]');
     var apply = function () {
       var n = 0, q = st.q.trim().toLowerCase();
       cards.forEach(function (el) {
         var d = el.dataset;
         var ok = (!q || d.n.indexOf(q) >= 0) && (!st.f.vg || d.vg === '1') && (!st.f.gf || d.gf === '1') && (!st.f.quick || +d.t < 30) &&
-          (!st.reg || d.reg.split('|').indexOf(st.reg) >= 0) && (!st.c || d.c === st.c) && (!st.m || d.m.indexOf(st.m) >= 0);
+          (!st.reg || d.reg.split('|').indexOf(st.reg) >= 0) && (!st.c || d.c === st.c) && (!st.m || d.m.indexOf(st.m) >= 0) &&
+          (!st.mo || (d.mo || '').split(' ').indexOf(st.mo) >= 0) && (!st.se || (d.se || '').split(' ').indexOf(st.se) >= 0);
         el.style.display = ok ? '' : 'none'; if (ok) n++;
       });
       $('cnt').textContent = n; var none = $('none'); if (none) none.hidden = n > 0;
@@ -68,6 +96,12 @@
     if (pre.get('c') && $('fC')) { st.c = pre.get('c'); $('fC').value = st.c; }
     if (pre.get('m') && $('fM')) { st.m = pre.get('m'); $('fM').value = st.m; }
     if (pre.get('quick')) st.f.quick = true;
+    var NAMES = { quick: 'Quick in 20 Minutes', comfort: 'Comfort Food', spicy: 'Spicy & Bold', healthy: 'Healthy & Light', festive: 'Festive Favourites', onepot: 'One-Pot Meals', summer: 'Summer Coolers', monsoon: 'Monsoon Snacks', diwali: 'Diwali Specials', winter: 'Winter Comfort Food' };
+    var tg = pre.get('mood') || pre.get('season');
+    if (tg && NAMES[tg]) {
+      if (pre.get('mood')) st.mo = tg; else st.se = tg;
+      var note = document.createElement('p'); note.className = 'tagnote'; note.innerHTML = 'Showing: <b>' + NAMES[tg] + '</b> · <a href="?">Show all recipes</a>'; bar.parentNode.insertBefore(note, bar);
+    }
     apply();
   }
 
@@ -95,6 +129,8 @@
       store.set('ga:fridge', Array.from(have)); sync(); render();
     });
     $('fClear').addEventListener('click', function () { have.clear(); store.set('ga:fridge', []); sync(); render(); });
+    var addq = new URLSearchParams(location.search).get('add');
+    if (addq) { addq.split(',').forEach(function (k) { if (GA.ing[k]) have.add(k); }); store.set('ga:fridge', Array.from(have)); }
     sync(); render();
   }
 
@@ -118,8 +154,15 @@
       $('sN').textContent = serv;
       doc.querySelectorAll('.q').forEach(function (b) { if (b.dataset.u !== 't') b.textContent = fmt(parseFloat(b.dataset.q) * serv / base, b.dataset.u); });
     };
-    $('sMinus').addEventListener('click', function () { if (serv > 1) { serv--; draw(); } });
-    $('sPlus').addEventListener('click', function () { if (serv < 12) { serv++; draw(); } });
+    var pre2 = doc.querySelectorAll('.serv-p button');
+    var drawP = function () { pre2.forEach(function (b) { b.classList.toggle('on', +b.dataset.s === serv); }); };
+    pre2.forEach(function (b) { b.addEventListener('click', function () { serv = +b.dataset.s; draw(); drawP(); }); });
+    var cooked = store.get('ga:cooked', []), ck = $('cookedBtn');
+    var paintCk = function () { var on = cooked.indexOf(id) >= 0; ck.textContent = on ? 'Cooked ✓' : 'Cooked it'; ck.classList.toggle('gold', on); };
+    ck.addEventListener('click', function () { var i = cooked.indexOf(id); if (i >= 0) cooked.splice(i, 1); else cooked.push(id); store.set('ga:cooked', cooked); paintCk(); });
+    paintCk(); drawP();
+    $('sMinus').addEventListener('click', function () { if (serv > 1) { serv--; draw(); drawP(); } });
+    $('sPlus').addEventListener('click', function () { if (serv < 12) { serv++; draw(); drawP(); } });
     var sv = $('saveBtn'), list = store.get('ga:saved', []);
     var paint = function () { var on = list.indexOf(id) >= 0; sv.textContent = on ? 'Saved' : 'Save'; sv.classList.toggle('gold', on); };
     sv.addEventListener('click', function () { var i = list.indexOf(id); if (i >= 0) list.splice(i, 1); else list.push(id); store.set('ga:saved', list); paint(); });
