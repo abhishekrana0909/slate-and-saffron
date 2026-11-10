@@ -68,7 +68,7 @@
   }
 
   // ----- 3. blocks glide in -----
-  var FX = ['.kick', '.lead', '.hero-b', '.hero-by', '.tlink', '.rule', '.feat-c', '.mb', '.mb-ctl', '.row', '.pc', '.regc', '.rc', '.xc', '.plate', '.story > div > p', '.news-w > div, .news-f', '.mock-t > p, .mock-t .btn', '.fridge-t > div > *, .fridge-t form', '.ticks .tick', '.foot-w > *', '.hl-list li', '.jump a', '.tagnote', '.pg-h .lead', '.cz-w > *', '.rcs-h', '.doc > *', '.r-g > *', '.fbar'];
+  var FX = ['.kick', '.lead', '.hero-b', '.hero-by', '.tlink', '.rule', '.feat-c', '.mb', '.mb-ctl', '.row', '.pc', '.regc', '.rc', '.xc', '.plate', '.story > div > p', '.news-w > div, .news-f', '.mock2-t > p, .mock2-t .btn, .acc-row, .th-stage, .mock2-g', '.fridge-t > div > *, .fridge-t form', '.ticks .tick', '.foot-w > *', '.hl-list li', '.jump a', '.tagnote', '.pg-h .lead', '.cz-w > *', '.rcs-h', '.doc > *', '.r-g > *', '.fbar'];
   var LITE = '.rc, .xc, .plate, .row, .jump a, .tick';
   var groups = new Map();
   $$(FX.join(','), main).forEach(function (el) {
@@ -76,7 +76,7 @@
     el.classList.add('fx');
     if (el.matches(LITE)) el.classList.add('fx-lite');
     if (el.matches('.story img, .story > div')) el.dataset.fx = el.tagName === 'IMG' ? 'left' : 'right';
-    if (el.matches('.feat-c, .mb, .mock-t .btn')) el.dataset.fx = 'zoom';
+    if (el.matches('.feat-c, .mb, .mock2-t .btn, .acc-row, .th-stage, .mock2-g')) el.dataset.fx = 'zoom';
     var p = el.parentElement, n = groups.get(p) || 0; groups.set(p, n + 1);
     el.style.setProperty('--d', Math.min(n, 8) * 90 + 'ms');
   });
@@ -140,7 +140,7 @@
 
   // ----- floating photos: only the ones on screen animate (the hero photo is left out) -----
   var fio = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('flo-vis', e.isIntersecting); }); }, { rootMargin: '120px' });
-  $$('.pc, .regc, .feat-c, .rc, .xc, .plate, .cz-b, .story img', main).forEach(function (el) {
+  $$('.pc, .regc, .feat-c, .rc, .xc, .plate, .cz-b, .story img, .mock2-g img', main).forEach(function (el) {
     if (el.closest('.mb-pg,.mb-src,.bk,.hero')) return;
     el.classList.add('flo');
     el.style.setProperty('--fd', (-Math.random() * 8).toFixed(2) + 's');
@@ -168,6 +168,48 @@
       if (card && !card.contains(e.relatedTarget)) card.style.transform = '';
     });
   }
+  // ----- hero: drifting spice dust that follows the mouse a little -----
+  (function () {
+    var hero = document.querySelector('.hero');
+    if (!hero) return;
+    var cv = document.createElement('canvas'), ctx = cv.getContext('2d');
+    if (!ctx) return;
+    cv.className = 'hero-dust'; cv.setAttribute('aria-hidden', 'true');
+    hero.insertBefore(cv, hero.querySelector('.hero-t'));
+    var COLORS = ['255,196,90', '242,150,40', '226,70,38', '255,226,150', '214,122,32'];
+    var W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 1.5), P = [], mx = 0, my = 0, tx = 0, ty = 0, running = false, last = 0, lastVar = 0;
+    function make() {
+      var d = Math.random();
+      return { x: Math.random() * W, y: Math.random() * H, d: d, r: 1 + d * d * 5, vy: -(.012 + Math.random() * .03) * (.5 + d), sw: Math.random() * 6.28, sp: .4 + Math.random() * .8, c: COLORS[(Math.random() * COLORS.length) | 0], a: .3 + Math.random() * .5 };
+    }
+    function size() {
+      W = hero.clientWidth; H = hero.clientHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      var n = W < 700 ? 34 : 70; P = []; for (var i = 0; i < n; i++) P.push(make());
+    }
+    function frame(t) {
+      if (!running) return;
+      var dt = Math.min(48, t - last || 16); last = t;
+      mx += (tx - mx) * .06; my += (ty - my) * .06;
+      if (Math.abs(mx - lastVar) > .01) { lastVar = mx; hero.style.setProperty('--mx', (mx * 1.8).toFixed(2)); hero.style.setProperty('--my', (my * 1.2).toFixed(2)); }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i];
+        p.y += p.vy * dt; p.x += Math.sin(t * .0004 * p.sp + p.sw) * .22;
+        if (p.y < -12) { p.y = H + 12; p.x = Math.random() * W; }
+        var x = p.x + mx * p.d * 46, y = p.y + my * p.d * 28, g = ctx.createRadialGradient(x, y, 0, x, y, p.r * (p.r > 3 ? 3.2 : 2.2));
+        g.addColorStop(0, 'rgba(' + p.c + ',' + p.a + ')'); g.addColorStop(1, 'rgba(' + p.c + ',0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, p.r * (p.r > 3 ? 3.2 : 2.2), 0, 6.283); ctx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    size();
+    var rz = 0; window.addEventListener('resize', function () { cancelAnimationFrame(rz); rz = requestAnimationFrame(size); });
+    hero.addEventListener('pointermove', function (e) { var b = hero.getBoundingClientRect(); tx = ((e.clientX - b.left) / b.width - .5) * 2; ty = ((e.clientY - b.top) / b.height - .5) * 2; }, { passive: true });
+    hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; });
+    new IntersectionObserver(function (es) { var on = es[0].isIntersecting; if (on && !running) { running = true; last = performance.now(); requestAnimationFrame(frame); } else if (!on) running = false; }, { threshold: 0 }).observe(hero);
+  })();
+
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
   tick();
