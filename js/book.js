@@ -167,28 +167,30 @@
   });
 })();
 
-// The Menu: an open book on the home page. Scrolling turns the pages (desktop); buttons, arrow keys and swipes do too.
+// The Menu: an open book on the home page. Pages turn only when you click (the arrows, either page, a dish in the contents), press the arrow keys or swipe.
 (function () {
   var sec = document.getElementById('menuBook');
   if (!sec) return;
   var mb = document.getElementById('mb'), L = document.getElementById('mbL'), R = document.getElementById('mbR'), pos = document.getElementById('mbPos');
+  var prevB = document.getElementById('mbPrev'), nextB = document.getElementById('mbNext');
   var spreadEl = mb.querySelector('.mb-spread');
   var src = [].slice.call(mb.querySelectorAll('.mb-src > div')).map(function (d) { return d.innerHTML; });
-  var spreads = src.length / 2, cur = 0, mp = 0, busy = false, raf = 0, last = src.length - 1;
+  var spreads = src.length / 2, cur = 0, mp = 0, busy = false, goal = null, last = src.length - 1, swiped = 0;
   var small = function () { return matchMedia('(max-width: 760px)').matches; };
   var reduce = function () { return matchMedia('(prefers-reduced-motion: reduce)').matches; };
-  sec.style.setProperty('--sp', spreads);
 
-  function total() { return Math.max(1, sec.offsetHeight - innerHeight); }
-  function target() { var r = sec.getBoundingClientRect(), p = Math.min(1, Math.max(0, -r.top / total())); return Math.round(p * (spreads - 1)); }
+  function sync() {
+    var at = small() ? mp : cur, n = small() ? src.length : spreads;
+    pos.textContent = (at + 1) + ' / ' + n;
+    prevB.disabled = at <= 0; nextB.disabled = at >= n - 1;
+  }
   function setSpread(i) {
     L.innerHTML = src[i * 2]; R.innerHTML = src[i * 2 + 1];
     R.classList.toggle('end', i * 2 + 1 === last); L.classList.remove('end');
-    pos.textContent = (i + 1) + ' / ' + spreads; cur = i;
+    cur = i; sync();
   }
   function setSingle(p, dir) {
-    L.innerHTML = ''; R.innerHTML = src[p]; R.classList.toggle('end', p === last); mp = p;
-    pos.textContent = (p + 1) + ' / ' + src.length;
+    L.innerHTML = ''; R.innerHTML = src[p]; R.classList.toggle('end', p === last); mp = p; sync();
     if (dir && !reduce()) { R.classList.remove('sl-n', 'sl-p'); void R.offsetWidth; R.classList.add(dir > 0 ? 'sl-n' : 'sl-p'); }
   }
   function flip(dir) {
@@ -201,35 +203,41 @@
     if (dir > 0) { R.innerHTML = src[nxt * 2 + 1]; R.classList.toggle('end', nxt * 2 + 1 === last); } else { L.innerHTML = src[nxt * 2]; }
     void leaf.offsetWidth; leaf.classList.add('go');
     setTimeout(function () { if (dir > 0) L.innerHTML = src[nxt * 2]; else { R.innerHTML = src[nxt * 2 + 1]; R.classList.toggle('end', nxt * 2 + 1 === last); } }, 450);
-    setTimeout(function () { leaf.remove(); cur = nxt; pos.textContent = (cur + 1) + ' / ' + spreads; busy = false; check(); }, 920);
+    setTimeout(function () { leaf.remove(); cur = nxt; sync(); busy = false; step(); }, 920);
   }
-  function check() {
-    if (small() || busy) return;
-    var t = target();
-    if (t === cur) return;
-    if (reduce()) setSpread(t); else flip(t > cur ? 1 : -1);
+  function step() {
+    if (busy || goal === null) return;
+    if (goal === cur) { goal = null; return; }
+    if (reduce()) { setSpread(goal); goal = null; return; }
+    flip(goal > cur ? 1 : -1);
   }
-  function onScroll() { if (raf) return; raf = requestAnimationFrame(function () { raf = 0; check(); }); }
+  function flipTo(t) { goal = Math.min(spreads - 1, Math.max(0, t)); step(); }
   function go(dir) {
     if (small()) { var p = mp + dir; if (p >= 0 && p < src.length) setSingle(p, dir); return; }
-    var i = Math.min(spreads - 1, Math.max(0, (busy ? cur : target()) + dir));
-    var y = sec.offsetTop + (i / (spreads - 1)) * total();
-    window.scrollTo({ top: y + (i === 0 ? 0 : 2), behavior: reduce() ? 'auto' : 'smooth' });
+    flipTo((goal === null ? cur : goal) + dir);
   }
-  function init() { if (small()) setSingle(0); else setSpread(Math.min(spreads - 1, target())); }
-  document.getElementById('mbPrev').addEventListener('click', function () { go(-1); });
-  document.getElementById('mbNext').addEventListener('click', function () { go(1); });
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { var s = small(); if (s !== (L.innerHTML === '')) init(); });
+  function jump(page) { if (small()) setSingle(page, page > mp ? 1 : -1); else flipTo(Math.floor(page / 2)); }
+  function init() { goal = null; if (small()) setSingle(0); else setSpread(0); }
+
+  prevB.addEventListener('click', function () { go(-1); });
+  nextB.addEventListener('click', function () { go(1); });
+  R.addEventListener('click', function (e) { if (Date.now() - swiped < 400 || e.target.closest('a,button')) return; go(1); });
+  L.addEventListener('click', function (e) {
+    if (Date.now() - swiped < 400) return;
+    var a = e.target.closest('.mb-toc a');
+    if (a) { e.preventDefault(); jump(1 + [].indexOf.call(a.parentNode.parentNode.children, a.parentNode)); return; }
+    if (!e.target.closest('a,button')) go(-1);
+  });
+  window.addEventListener('resize', function () { if (small() !== (L.innerHTML === '')) init(); });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
     var bk = document.getElementById('bk'); if (bk && !bk.hidden) return;
     if (/input|select|textarea/i.test((document.activeElement || {}).tagName || '')) return;
-    var r = sec.getBoundingClientRect(); if (r.top > innerHeight * .5 || r.bottom < innerHeight * .5) return;
+    var r = sec.getBoundingClientRect(); if (r.top > innerHeight * .6 || r.bottom < innerHeight * .4) return;
     go(e.key === 'ArrowRight' ? 1 : -1);
   });
   var x0 = null;
-  mb.addEventListener('pointerdown', function (e) { if (e.target.closest('a,button')) return; x0 = e.clientX; });
-  window.addEventListener('pointerup', function (e) { if (x0 === null) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1); });
+  mb.addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+  window.addEventListener('pointerup', function (e) { if (x0 === null) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 60) { swiped = Date.now(); go(dx < 0 ? 1 : -1); } });
   init();
 })();
