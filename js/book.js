@@ -246,7 +246,7 @@
   L.addEventListener('click', function (e) {
     if (!opened || Date.now() - swiped < 400) return;
     var a = e.target.closest('.mb-toc a');
-    if (a) { e.preventDefault(); jump(2 + [].indexOf.call(a.parentNode.parentNode.children, a.parentNode)); return; }
+    if (a) { e.preventDefault(); jump(1 + [].indexOf.call(a.parentNode.parentNode.children, a.parentNode)); return; }
     if (!e.target.closest('a,button')) go(-1);
   });
   window.addEventListener('resize', function () { if (small() !== (L.innerHTML === '')) init(); });

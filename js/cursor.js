@@ -16,7 +16,7 @@
   root.classList.add('cur-on');
 
   var LABELS = [
-    ['.bk-card', 'Open'], ['.mb-toc a', 'Go'], ['.mb-btn, .mb-go', 'Go'], ['.mb-r:not(.end)', 'Next'], ['.mb-l', 'Back'],
+    ['.bk-card', 'Open'], ['.mb-it', 'View'], ['.mb-toc a', 'Go'], ['.mb-btn, .mb-go', 'Go'], ['.mb-r:not(.end)', 'Next'], ['.mb-l', 'Back'],
     ['.rc-sv', 'Save'], ['.pc, .regc, .rc-i, .rc-in h3 a, .xc, .plate, .cs-tall, .cs-sm, .feat-c, .row', 'View'], ['.btn', 'Go']
   ];
   var GENERIC = 'a, button, [role="button"], label, select, summary, .chip, .tick, .mb-ctl button, .bk-nav, input[type="checkbox"]';
