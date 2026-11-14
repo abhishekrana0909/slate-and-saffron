@@ -1798,3 +1798,9 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .up-t { stroke: rgba(217, 138, 24, .28); }
 .up-p { stroke: var(--gold); stroke-linecap: round; transition: stroke-dashoffset .12s linear; filter: drop-shadow(0 0 4px rgba(217, 138, 24, .7)); }
 .up-a { position: relative; }
+
+/* Punjab + Chutney home sections: show the photo, keep only the left side dark for the text */
+.pj:not(.sub) .pj-bg { opacity: 1; filter: brightness(1.15) saturate(1.12); }
+.ch:not(.sub) .ch-bg { opacity: 1; filter: brightness(1.2) saturate(1.15); }
+.pj:not(.sub) .pj-bd { background: linear-gradient(90deg, rgba(13, 10, 8, .72) 0%, rgba(13, 10, 8, .32) 46%, rgba(13, 10, 8, 0) 80%), linear-gradient(180deg, #0d0a08 0, rgba(13, 10, 8, 0) 14%, rgba(13, 10, 8, 0) 86%, #0d0a08 100%); }
+.ch:not(.sub) .ch-bd { background: linear-gradient(90deg, rgba(10, 13, 10, .74) 0%, rgba(10, 13, 10, .3) 46%, rgba(10, 13, 10, 0) 80%), linear-gradient(180deg, #0a0d0a 0, rgba(10, 13, 10, 0) 14%, rgba(10, 13, 10, 0) 86%, #0a0d0a 100%); }
