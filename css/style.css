@@ -1842,3 +1842,11 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .story { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
 .story img { aspect-ratio: 4 / 3; }
 @media (max-width: 900px) { .story { grid-template-columns: minmax(0, 1fr); } }
+
+/* Our story: narrow, nearly square crop like the old tall photo (all six spoons stay inside) */
+.story { grid-template-columns: minmax(0, .85fr) minmax(0, 1fr); gap: clamp(32px, 7vw, 100px); }
+.story img { aspect-ratio: 1 / 1; object-position: 52% 50%; }
+@media (max-width: 900px) { .story { grid-template-columns: minmax(0, 1fr); } }
+
+/* Our story: tall portrait photo with six spoons */
+.story img { aspect-ratio: 4 / 5; object-position: 50% 50%; }
