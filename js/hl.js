@@ -217,3 +217,9 @@
     });
   });
 })();
+
+// ---- /drinks/?t=fizzy opens with that filter on ----
+(function () {
+  var t = new URLSearchParams(location.search).get('t'); if (!t) return;
+  var c = document.querySelector('.dr-f .chip[data-dt="' + t + '"]'); if (c) c.click();
+})();
