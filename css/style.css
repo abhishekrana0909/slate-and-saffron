@@ -1837,3 +1837,8 @@ a.ch-pr:hover { background: var(--gold); color: #17110a; }
 .m-a:hover { transform: rotate(0deg) translateY(-8px) scale(1.03); z-index: 5; box-shadow: 0 0 0 1px var(--gold), 0 40px 70px -24px rgba(217, 138, 24, .5); }
 @media (max-width: 1000px) { .mock2-col { height: 400px; } .mock2-bd { background: linear-gradient(180deg, rgba(24, 22, 20, .86), rgba(24, 22, 20, .6)); } }
 @media (max-width: 560px) { .mock2-col { height: 320px; } .mock2-n { gap: 18px; } }
+
+/* Our story: landscape photo with six spoons */
+.story { grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
+.story img { aspect-ratio: 4 / 3; }
+@media (max-width: 900px) { .story { grid-template-columns: minmax(0, 1fr); } }
